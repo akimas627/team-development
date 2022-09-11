@@ -22,9 +22,7 @@ body{
     width: 90%;
 }
 
-.entire_site{
-   
-}
+
 
 .header{
     background-color: rgba(26, 26, 26, 0.5);
@@ -63,6 +61,12 @@ body{
 h1 {
     font-family: 'Montserrat', sans-serif;
     font-size: 48px;
+    margin: 20px;
+}
+
+h2 {
+    font-size: 35px;
+    margin: 10px;
 }
 
 input[type="submit"] {
@@ -80,12 +84,17 @@ input[type="submit"] {
     margin: 20px;
 }
 
-input[type="email"], input[type="number"] ,input[type="password"]{
-    line-height: 1.8;
-    width: 25%;
+input[type="email"], input[type="password"]{
+    line-height: 2;
+    width: 50%;
+    font-size: 0.95rem;
+    display: block;
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
 }
 
-input[type="email"]:hover, input[type="number"]:hover {
+input[type="email"]:hover {
     background-color: #f5f5f5;
     transition: color 2s ease-in-out, background-color 0.15s ease-in-out;
 }
