@@ -17,7 +17,7 @@ body {
     width: 90%;
 }
 
-.header {
+.top {
     background-color: #35383e;
     color: #fff;
     margin-bottom: 2rem;
@@ -42,7 +42,7 @@ h1 {
     font-size: 48px;
 }
 
-button, input[type="submit"] {
+input[type="submit"] {
     background-color: #878787;
     color: #fff;
     border: 1px solid transparent;
@@ -54,6 +54,7 @@ button, input[type="submit"] {
     text-align: center;
     transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
     vertical-align: middle;
+    margin: 20px;
 }
 
 input[type="email"], input[type="number"] ,input[type="password"]{

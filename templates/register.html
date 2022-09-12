@@ -7,7 +7,7 @@
         <title>youtube memo {% block title %}{% endblock %}</title>
         <meta name="description" content="youtubeとメモをリンク。新たな学習体験。">
         <meta name="application-name" content="Youtube memo">
-        <link href="../css/styles.css" rel="stylesheet">
+        <link href="/static/css/styles.css" rel="stylesheet">
         <!-- CSS only -->
     </head>
 
@@ -23,13 +23,13 @@
                 <form action="/register" method="post">
                     <h2>mail address</h2>
                     <div class="mailaddress section">
-                        <input autocomplete="off" autofocus id="username" name="username" placeholder="メールアドレス" type="email">
+                        <input autocomplete="off" autofocus id="email" name="email" placeholder="メールアドレス" type="email">
                     </div>
                     <div class="password section">
                         <h2>password</h2>
-                        <input id="password" name="mainpassword" placeholder="Password" type="password">
+                        <input id="password" name="mainpassword" placeholder="パスワード" type="password">
                         <h2>password</h2>
-                        <input id="password" name="subpassword" placeholder="Password again" type="password">
+                        <input id="password" name="subpassword" placeholder="パスワード再入力" type="password">
                     </div>
                     <input type="submit" name="regist" value="登録"></input>
                 </form>

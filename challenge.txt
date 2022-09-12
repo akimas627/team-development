@@ -2,4 +2,7 @@ test
 
 hello,hoby rush.
 
-testtesttest
+練習
+
+練習２
+
