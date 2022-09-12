@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+
+<html lang="ja">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, user-scalable=yes">
+        <title>youtube memo {% block title %}{% endblock %}</title>
+        <meta name="description" content="youtubeとメモをリンク。新たな学習体験。">
+        <meta name="application-name" content="Youtube memo">
+        <link href="../css/styles.css" rel="stylesheet">
+        <!-- CSS only -->
+    </head>
+
+    <body>
+        <div class="site_entire">
+            <header>
+                <h1 class="header">Youtube memo</h1>
+            </header>
+        </div>
+        <div class="container">
+            <div class="section">
+                <h1>register</h1>
+                <form action="/register" method="post">
+                    <h2>mail address</h2>
+                    <div class="mailaddress section">
+                        <input autocomplete="off" autofocus id="username" name="username" placeholder="メールアドレス" type="email">
+                    </div>
+                    <div class="password section">
+                        <h2>password</h2>
+                        <input id="password" name="mainpassword" placeholder="Password" type="password">
+                        <h2>password</h2>
+                        <input id="password" name="subpassword" placeholder="Password again" type="password">
+                    </div>
+                    <input type="submit" name="regist" value="登録"></input>
+                </form>
+            </div>
+        </div>
+    </body>
+</html>
