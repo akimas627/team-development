@@ -1,6 +1,10 @@
 test
 
+<<<<<<< HEAD
 hello,hoby rush.
 
 練習
 
+=======
+hello,hoby rush.
+>>>>>>> 165f136c6e3c1a39bdb4e1521c190dafe35d072f
