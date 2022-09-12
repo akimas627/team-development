@@ -24,7 +24,7 @@ def load_user(user_id):
 
 @app.route("/", methods=["GET", "POST"])
 def index():
-    return render_template("index.html")
+    return render_template("register.html")
 
 # 新規登録
 @app.route("/register", methods=["GET", "POST"])
