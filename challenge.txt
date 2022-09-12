@@ -4,9 +4,3 @@ hello,hoby rush.
 
 練習
 
-<<<<<<< HEAD
-練習２
-
-=======
-aa
->>>>>>> e7d9d52fcb2bc45f113a4fe1f7f4f04aa19466e2
