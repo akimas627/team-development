@@ -15,7 +15,7 @@ login_manager.init_app(app)
 # データベース
 class Users(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String, nullable=False, unique=True)
+    email = db.Column(db.String, nullable=False, unique=True)
     hash = db.Column(db.String, nullable=False)
 
 @login_manager.user_loader
@@ -32,12 +32,12 @@ def register():
     if request.method == "GET":
         return render_template("register.html")
     else:
-        username = request.form.get("username")
+        email = request.form.get("email")
         main_password = request.form.get("mainpassword")
         sub_password = request.form.get("subpassword")
         # usernameやpasswordの入力がない場合など
-        if not username:
-            flash("usernameを入力してください")
+        if not email:
+            flash("emailを入力してください")
             return render_template("register.html")
         if not main_password:
             flash("パスワードを入力してください")
@@ -51,7 +51,7 @@ def register():
 
     # hashの作成
         hash = generate_password_hash(main_password, method="sha512", salt_length=1000)
-        new_user = Users(username=username, hash=hash)
+        new_user = Users(email=email, hash=hash)
 
         try:
             db.session.add(new_user)
@@ -68,12 +68,12 @@ def login():
     if request.method == "GET":
         return render_template("login.html")
     else:
-        username = request.form.get("username")
+        email = request.form.get("email")
         password = request.form.get("password")
 
-        # username, passwordの入力がない場合
-        if not username:
-            flash("usernameを入力してください")
+        # email, passwordの入力がない場合
+        if not email:
+            flash("emailを入力してください")
             return render_template("login.html")
         if not password:
             flash("パスワードを入力してください")
@@ -97,3 +97,4 @@ def login():
 def logout():
     logout_user()
     return redirect("/")
+
