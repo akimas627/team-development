@@ -3,6 +3,7 @@ from flask import Flask, render_template, redirect, request, flash, session
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import UserMixin, LoginManager, login_user, logout_user, login_required
 from werkzeug.security import check_password_hash, generate_password_hash
+from helpers import check_email
 
 app = Flask(__name__)
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///videomemo.db"
@@ -24,7 +25,14 @@ def load_user(user_id):
 
 @app.route("/", methods=["GET", "POST"])
 def index():
-    return render_template("register.html")
+    if not session:
+        return render_template("login.html")
+    if request.method == "GET":
+        user_id = session["user_id"]
+        return render_template("index.html")
+    else:
+        redirect("/")
+
 
 # 新規登録
 @app.route("/register", methods=["GET", "POST"])
@@ -34,9 +42,9 @@ def register():
     else:
         email = request.form.get("email")
         main_password = request.form.get("mainpassword")
-        sub_password = request.form.get("subpassword")
-        # usernameやpasswordの入力がない場合など
-        if not email:
+        sub_password = request.form.get("subpassword") 
+        # emailやpasswordの入力がない場合など
+        if not email or not check_email(email):
             flash("emailを入力してください")
             return render_template("register.html")
         if not main_password:
@@ -53,9 +61,11 @@ def register():
         hash = generate_password_hash(main_password, method="sha512", salt_length=1000)
         new_user = Users(email=email, hash=hash)
 
+        # usersテーブルに登録
         try:
             db.session.add(new_user)
             db.session.commit()
+        # 登録できなかった場合
         except:
             return render_template("register.html")
 
@@ -70,24 +80,27 @@ def login():
     else:
         email = request.form.get("email")
         password = request.form.get("password")
-
-        # email, passwordの入力がない場合
-        if not email:
-            flash("emailを入力してください")
-            return render_template("login.html")
+        # emailの入力がない場合とemailではない物が入力されたときの処理
+        if not email or not check_email(email):
+            flash("有効なemailを入力してください")
+            return render_template("login.html")        
         if not password:
             flash("パスワードを入力してください")
             return render_template("login.html")
 
         # データベースからユーザーのデータを取得
-        user = Users.query.filter_by(username=username).first()
+        user = Users.query.filter_by(email=email).first()
 
+        if not user:
+            return render_template("login.html")
+        
         # 保存されたhashとpasswordのhashが同じか確認する
         if not check_password_hash(user.hash, password):
-            flash("passwordが間違っています")
+            flash("emailまたはパスワードが違います")
             return render_template("login.html")
 
         login_user(user)
+        session["user_id"] = user.id
         flash("ログイン成功")
         return redirect("/")
 
@@ -96,5 +109,6 @@ def login():
 @login_required
 def logout():
     logout_user()
-    return redirect("/")
+    session.clear()
+    return redirect("/login")
 
