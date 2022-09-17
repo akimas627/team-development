@@ -3,12 +3,18 @@
 <html lang="ja">
     <head>
         <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500&display=swap" rel="stylesheet">
-         <link href="team-development/static/css/loginstyles.css" rel="stylesheet">
-        <link href="/static/css/home.css" rel="stylesheet">
+        <link href="team-development/static/css/loginstyles.css" rel="stylesheet">
+        <link href="home.css" rel="stylesheet">
+        <script
+        src="https://code.jquery.com/jquery-3.4.1.min.js"
+        integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+        crossorigin="anonymous"></script>
+        <script src="js/home.js"></script>
         <title>Home</title>
     </head>
 
     <body>
+        <div class="icon-plus"></div>
         <div class="home">
             <div class="top_home">
                 <a class="registbutton" href="/register">Logout</a>
@@ -21,7 +27,7 @@
                             <ul class="category_class">
                                 <li class="topic">ジャンル</li> 
                                 <li class="category_item"><a class="title" href="#">education</a></li>
-                                <li class="category_item"><a href="#">hobby</a></li>
+                                <li class="category_item"><a id="link_hobby" href="javascript:void(0)">hobby</a></li>
                                 <li class="category_item"><a href="#">music</a></li>
                             </ul>
                     </div>
@@ -49,8 +55,55 @@
                                 </div>
 
                                 <div class="memo_card">
-                                    <!-- <div class="card__imgframe_movie"><iframe width="560" height="315" src="https://www.youtube.com/embed/1Dr-DaTgkBE" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div> -->
                                     <img class="card__imgframe" src="https://img.youtube.com/vi/yaJx0Gj_LCY/maxresdefault.jpg">
+                                    <div class="card__textbox">
+                                        <div class="card__titletext">
+                                            タイトルがはいります。タイトルがはいります。
+                                        </div>
+                                        <div class="card__overviewtext">
+                                            概要がはいります。概要がはいります。概要がはいります。概要がはいります。
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="memo_card">
+                                    <img class="card__imgframe" src="https://img.youtube.com/vi/1Dr-DaTgkBE/maxresdefault.jpg">
+                                    <div class="card__textbox">
+                                        <div class="card__titletext">
+                                            タイトルがはいります。タイトルがはいります。
+                                        </div>
+                                        <div class="card__overviewtext">
+                                            概要がはいります。概要がはいります。概要がはいります。概要がはいります。
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="memo_card">
+                                    <img class="card__imgframe" src="https://img.youtube.com/vi/1Dr-DaTgkBE/maxresdefault.jpg">
+                                    <div class="card__textbox">
+                                        <div class="card__titletext">
+                                            タイトルがはいります。タイトルがはいります。
+                                        </div>
+                                        <div class="card__overviewtext">
+                                            概要がはいります。概要がはいります。概要がはいります。概要がはいります。
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="memo_card">
+                                    <img class="card__imgframe" src="https://img.youtube.com/vi/1Dr-DaTgkBE/maxresdefault.jpg">
+                                    <div class="card__textbox">
+                                        <div class="card__titletext">
+                                            タイトルがはいります。タイトルがはいります。
+                                        </div>
+                                        <div class="card__overviewtext">
+                                            概要がはいります。概要がはいります。概要がはいります。概要がはいります。
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="memo_card">
+                                    <img class="card__imgframe" src="https://img.youtube.com/vi/1Dr-DaTgkBE/maxresdefault.jpg">
                                     <div class="card__textbox">
                                         <div class="card__titletext">
                                             タイトルがはいります。タイトルがはいります。
@@ -78,7 +131,7 @@
                         </div>
                         <div class="content_sub">
                             <div card="card_topic">
-                                <h1 class="topic_title">hobby</h1>
+                                <h1 class="topic_title" id="hobby">hobby</h1>
                             </div>
                             <div class="memo_card_group">
                                 <div class="memo_card">
@@ -95,48 +148,8 @@
                                 </div>
                             
                             </div>
-                        </div>
+                        </div> 
 
-                        <div class="content_sub">
-                            <div card="card_topic">
-                                <h1 class="topic_title">music</h1>
-                            </div>
-                            <div class="memo_card_group">
-                                <div class="memo_card">
-                                    <div class="card__imgframe"></div>
-                                    <div class="card__textbox">
-                                        <div class="card__titletext">
-                                            タイトルがはいります。タイトルがはいります。
-                                        </div>
-                                        <div class="card__overviewtext">
-                                            概要がはいります。概要がはいります。概要がはいります。概要がはいります。
-                                        </div>
-                                        
-                                    </div>
-                                </div>
-                            
-                            </div>
-                        </div>
-                        <div class="content_sub">
-                            <div card="card_topic">
-                                <h1 class="topic_title">music</h1>
-                            </div>
-                            <div class="memo_card_group">
-                                <div class="memo_card">
-                                    <div class="card__imgframe"></div>
-                                    <div class="card__textbox">
-                                        <div class="card__titletext">
-                                            タイトルがはいります。タイトルがはいります。
-                                        </div>
-                                        <div class="card__overviewtext">
-                                            概要がはいります。概要がはいります。概要がはいります。概要がはいります。
-                                        </div>
-                                        
-                                    </div>
-                                </div>
-                            
-                            </div>
-                        </div>
                         <div class="content_sub">
                             <div card="card_topic">
                                 <h1 class="topic_title">music</h1>

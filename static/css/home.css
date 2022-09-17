@@ -2,6 +2,7 @@
     margin: 0;
     padding:0;
 }
+
 .home {
     display: flex;
     flex-direction: column;
@@ -92,10 +93,6 @@
     /* flex-grow: 1; */
 }
 
-/* .card_topic{
-    padding: 1rem;
-} */
-
 .see_topic{
     display: inline;
     padding: 1rem;
@@ -123,7 +120,7 @@
 }
 
 .content_sub{
-    height: 400px;
+    min-height: 400px;
     padding-bottom: 2.5rem;
     /* flex-grow: 1; */
     /* box-sizing: border-box; */
@@ -136,24 +133,36 @@
     padding-left: 50px;
     /* max-width: 640px; */
     width: 90%;
-    height: auto;
+    height: auto; 
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: flex-start;
   }
 
-  .memo_card_group > :nth-child(n+2){
+  .memo_card_group > :nth-child(3n){
     margin-left: 20px;
   }
 
+  .memo_card_group > :nth-child(3n+2){
+    margin-left: 20px;
+  }
+
+  .memo_card_group > :nth-child(n+4){
+    margin-top: 20px;
+  }  
+
   .memo_card{
-    /* ポイント４ */
     width: calc((100% - 40px * 1) / 3);
     height: auto;
     border-radius: 8px;
     overflow: hidden;
-    box-shadow: 0 4px 15px rgba(0,0,0,.2)
+    box-shadow: 0 4px 15px rgba(0,0,0,.2);
+    /* margin-top: 20px; */
+    -webkit-transition: all 0.3s ease;
+    -moz-transition: all 0.3s ease;
+    -o-transition: all 0.3s ease;
+    transition: all  0.3s ease; 
   }
 
   .memo_card:hover{
@@ -169,16 +178,6 @@
     /* position: auto; */
   }
 
-  .card__imgfram_movie{
-    width: 90%;
-    /* height: auto; */
-    /* padding-top: 56.25%; */
-    background: #bbb;
-    box-sizing: border-box;
-    /* position: auto; */
-    position: relative;
-    aspect-ratio: 16/9;
-  }
 
   .card_imgfram_movie iframe{
     position: absolute;
@@ -210,8 +209,37 @@
     line-height: 150%;
     color: #989696;
   }
-
-
+  
+/* 左下のプラスボタン */
+  .icon-plus {
+    color: #fff;
+    width: 80px;
+    height: 80px;
+    position: relative;
+    background-color: #737373cd;
+    position: fixed;
+    border-radius: 50%;
+    bottom: 40px;
+    right: 50px
+    /* top: 500px; */
+  }
+  .icon-plus:before,
+  .icon-plus:after {
+    position: absolute;
+    top: 40px;
+    left: 50%;
+    content: '';
+    display: inline-block;
+    width: 25px;
+    height: 13px;
+    border-top: 4px solid rgba(0, 0, 0, 0.781);
+    transform: translateX(-50%);
+  }
+  .icon-plus:after {
+    top: 35px;
+    left: 21px;
+    transform: rotate(90deg);
+  }
 
 
 
