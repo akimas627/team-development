@@ -241,6 +241,22 @@
     transform: rotate(90deg);
   }
 
+  /*全て共通：モーダルのボタンの色を変更したい場合*/
+.modaal-close:after, 
+.modaal-close:before{
+  background:rgb(173, 171, 171);  
+}
+
+.modaal-close:focus:after,
+.modaal-close:focus:before,
+.modaal-close:hover:after,
+.modaal-close:hover:before{
+  background:#666;
+}
+
+
+
+
 
 
 .top_home {
