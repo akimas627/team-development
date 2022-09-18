@@ -19,33 +19,51 @@
     border-left: 20px solid #d9d9d9;
     min-height: 100vh;
     width: 200px;
-    position: relative;
+   /*  position: relative; */
     background-color: #d9d9d9;
-    /* flex-grow: 1; */
+    /* display: flex; */
+
+    /* position: fixed; */
+}
+
+.category{
+    position: sticky;
+    top: 0; /* 上端から10pxのところで固定 */
+}
+
+.topic{
+  position: absolute;
+  margin-bottom: 20px;
+  padding-top: 10px;
 }
 
 .nav_var ul{
     position: absolute;
-    top: 0;
+    top: 50px;
     left:0;
-    width: 90%;
-    padding-top: 20px;
+    width: 150px;
+    padding-top: 0;
     padding-left: 10px;
+    overflow: scroll;
+    height: 80vh;
     display: flex;
     flex-wrap: wrap;
 }
 
 .nav_var li{
     list-style: none;
+    width: 140px;
 }
 
 .category_item{
     display: block;
-    width: 200px;
+    width: 140px;
+    height: auto;
     position: relative;
     border-radius: 15px;
     padding-top: 20px;
     padding-left: 15px;
+    overflow-wrap: break-all;
     -webkit-transition: all 0.3s ease;
     -moz-transition: all 0.3s ease;
     -o-transition: all 0.3s ease;
@@ -60,7 +78,7 @@
     text-decoration: none;
     color: #636161;
     font-size: 20px;
-    height: 20px;
+    height: auto;
     line-height: 20px;
     padding: 0 0 18px 0;
 }
@@ -72,7 +90,7 @@
 }
 
 .nav_var ul li a{
-    white-space:wrap;
+    white-space:normal	;
 }
 
 
@@ -169,6 +187,10 @@
     background-color: #63616194;
   }
 
+  .memo_card a{
+    text-decoration: none;
+  }
+
   .card__imgframe{
     width: 100%;
     height: auto;
@@ -176,15 +198,6 @@
     background: #bbb;
     box-sizing: border-box;
     /* position: auto; */
-  }
-
-
-  .card_imgfram_movie iframe{
-    position: absolute;
-    top: 0;
-    right: 0;
-    width: 100%;
-    /* height: 100%; */
   }
 
 
@@ -223,6 +236,9 @@
     right: 50px
     /* top: 500px; */
   }
+  .icon-plus:hover{
+    background-color: #b9b9b9cd;
+  }
   .icon-plus:before,
   .icon-plus:after {
     position: absolute;
@@ -241,10 +257,15 @@
     transform: rotate(90deg);
   }
 
+/*全て共通：hideエリアをはじめは非表示*/
+.hide-area{
+  display: none;
+}
+
   /*全て共通：モーダルのボタンの色を変更したい場合*/
 .modaal-close:after, 
 .modaal-close:before{
-  background:rgb(173, 171, 171);  
+  background:rgb(100, 100, 100);  
 }
 
 .modaal-close:focus:after,
