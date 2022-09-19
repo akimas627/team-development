@@ -1,9 +1,10 @@
 import os
-from flask import Flask, render_template, redirect, request, flash, session
+import datetime
+from flask import Flask, render_template, redirect, request, flash, session, url_for
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import UserMixin, LoginManager, login_user, logout_user, login_required
 from werkzeug.security import check_password_hash, generate_password_hash
-from helpers import check_email
+from helpers import is_check_email
 
 app = Flask(__name__)
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///videomemo.db"
@@ -18,20 +19,95 @@ class Users(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String, nullable=False, unique=True)
     hash = db.Column(db.String, nullable=False)
+    videos = db.relationship("Videos", back_populates="user")
+    categories = db.relationship("Categories", back_populates="user")
+    memos = db.relationship("Memos", back_populates="user")
+
+
+class Videos(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    videotitle = db.Column(db.String, nullable=False)
+    url = db.Column(db.String, nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
+    categorie_id = db.Column(db.Integer, db.ForeignKey("categories.id"), nullable=False)
+    user = db.relationship("Users", back_populates="videos")
+    categorie = db.relationship("Categories", back_populates="video")
+    memos = db.relationship("Memos", back_populates="video")
+
+
+class Categories(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    categorie = db.Column(db.String, unique=True, nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
+    user = db.relationship("Users", back_populates="categories")
+    video = db.relationship("Videos", back_populates="categorie")
+
+
+class Memos(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    memotitle = db.Column(db.String, nullable=False)
+    memo = db.Column(db.String)
+    timestamp = db.Column(db.Integer, nullable=False)
+    updatetime = db.Column(db.DateTime, nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
+    video_id = db.Column(db.Integer, db.ForeignKey("videos.id"), nullable=False)
+    user = db.relationship("Users", back_populates="memos")
+    video = db.relationship("Videos", back_populates="memos")
+
 
 @login_manager.user_loader
 def load_user(user_id):
     return Users.query.get(int(user_id))
 
+
 @app.route("/", methods=["GET", "POST"])
-def index():
+def home():
+    # sessionがない場合はlogin.htmlに移動
     if not session:
         return render_template("login.html")
+    # session情報の取得
+    user_id = session["user_id"]
+
+    # マイページ
     if request.method == "GET":
-        user_id = session["user_id"]
-        return render_template("index.html")
+        # userが保持してるカテゴリをすべて取得
+        categories = Categories.query.filter_by(user_id=user_id).all()
+        # userが保持してるvideoをすべて取得
+        videos = Videos.query.filter_by(user_id=user_id).all()
+        return render_template("home.html", videos=videos, categories=categories)
+
+    # 動画登録機能
     else:
-        redirect("/")
+        # userからタイトル・URL・カテゴリーを受け取る
+        videotitle = request.form.get("videotitle")
+        url = request.form.get("url")
+        categorie = request.form.get("categorie")
+        # エラー処理
+        if not videotitle:
+            flash("メモタイトルを入力してください")
+            return render_template("home.html")
+        if not url or len(url) != 28:
+            flash("正しいurlを入力してください")
+            return render_template("home.html")
+        if not categorie:
+            flash("カテゴリーを入力してください")
+            return render_template("home.html")
+
+        # urlからyoutubeのidを取得
+        url = url[17:28]
+
+        # categorieが存在しない場合は新たに作成し追加する
+        if not Categories.query.filter_by(categorie=categorie, user_id=user_id).first():
+            new_categorie = Categories(categorie=categorie, user_id=user_id)
+            db.session.add(new_categorie)
+            db.session.commit()
+
+        # 新たなvideoを作成しdbに追加
+        categorie = Categories.query.filter_by(categorie=categorie, user_id=user_id).first()
+        new_video = Videos(videotitle=videotitle, url=url, user_id=user_id, categorie_id=categorie.id)
+        db.session.add(new_video)
+        db.session.commit()
+        return redirect(url_for("home"))
 
 
 # 新規登録
@@ -39,12 +115,15 @@ def index():
 def register():
     if request.method == "GET":
         return render_template("register.html")
+
     else:
+        # userからemailとpasswordを受け取る
         email = request.form.get("email")
         main_password = request.form.get("mainpassword")
         sub_password = request.form.get("subpassword") 
-        # emailやpasswordの入力がない場合など
-        if not email or not check_email(email):
+
+        # emailやpasswordの入力がない場合などのエラー処理
+        if not email or not is_check_email(email):
             flash("emailを入力してください")
             return render_template("register.html")
         if not main_password:
@@ -57,7 +136,7 @@ def register():
             flash("同じパスワードを入力してください")
             return render_template("register.html")
 
-    # hashの作成
+        # hashの作成
         hash = generate_password_hash(main_password, method="sha512", salt_length=1000)
         new_user = Users(email=email, hash=hash)
 
@@ -67,10 +146,11 @@ def register():
             db.session.commit()
         # 登録できなかった場合
         except:
+            flash("既にuserが存在します")
             return render_template("register.html")
 
         flash("登録成功")
-        return redirect("/login")
+        return redirect(url_for("login"))
 
 # ログイン機能
 @app.route("/login", methods=["GET", "POST"])
@@ -78,10 +158,12 @@ def login():
     if request.method == "GET":
         return render_template("login.html")
     else:
+        # userからemailとpasswordを受け取る
         email = request.form.get("email")
         password = request.form.get("password")
-        # emailの入力がない場合とemailではない物が入力されたときの処理
-        if not email or not check_email(email):
+
+        # エラー処理
+        if not email or not is_check_email(email):
             flash("有効なemailを入力してください")
             return render_template("login.html")        
         if not password:
@@ -91,18 +173,21 @@ def login():
         # データベースからユーザーのデータを取得
         user = Users.query.filter_by(email=email).first()
 
+        # userが存在しない場合
         if not user:
+            flash("userが存在しません")
             return render_template("login.html")
         
         # 保存されたhashとpasswordのhashが同じか確認する
         if not check_password_hash(user.hash, password):
-            flash("emailまたはパスワードが違います")
+            flash("パスワードが違います")
             return render_template("login.html")
 
         login_user(user)
+        # sessionにuser_idを保持
         session["user_id"] = user.id
         flash("ログイン成功")
-        return redirect("/")
+        return redirect(url_for("home"))
 
 # ログアウト機能
 @app.route("/logout")
@@ -110,5 +195,91 @@ def login():
 def logout():
     logout_user()
     session.clear()
-    return redirect("/login")
+    return redirect(url_for("home"))
 
+# 動画の詳細機能
+@app.route("/detail/<int:id>")
+@login_required
+def detail(id):
+    user_id = session["user_id"]
+    # 動画の情報を取得
+    video = Videos.query.get(id)
+    video_url = "https://www.youtube.com/embed/" + video.url
+    # 動画のカテゴリを取得
+    categorie = Categories.query.get(video.categorie_id)
+    # 動画と紐づくメモの取得
+    memos = Memos.query.filter_by(user_id=user_id, video_id=video.id).all()
+    # メモが存在する場合はメモの情報を渡す
+    if memos:
+        return render_template("detail.html", video=video, categorie=categorie, video_url=video_url, memos=memos)
+    # メモが存在しない場合はメモの情報は渡さない
+    return render_template("detail.html", video=video, video_url=video_url, categorie=categorie)
+
+# メモの詳細機能
+@app.route("/detail/<int:id>/<int:memo_id>", methods=["GET", "POST"])
+@login_required
+def memodetail(id, memo_id):
+    video = Videos.query.get(id)
+    # 現在のメモ情報を取得
+    now_memo = Memos.query.get(memo_id)
+    
+    # 各メモを動画とともに表示する
+    if request.method == "GET":
+        user_id = session["user_id"]
+        memos = Memos.query.filter_by(user_id=user_id, video_id=video.id).all()
+        now_memo = Memos.query.get(memo_id)
+        categorie = Categories.query.get(video.categorie_id)
+        # メモのタイムスタンプの時間を秒に変換する
+        memo_time = str(int(datetime.timedelta(hours=int(now_memo.timestamp[0:2]), minutes=int(now_memo.timestamp[3:5]), seconds=int(now_memo.timestamp[6:8])).total_seconds()))
+        # メモのタイムスタンプとYoutubeのリンクを組み合わせる
+        video_url = "https://www.youtube.com/embed/" + video.url + "?start=" + memo_time
+        return render_template("movie.html", video=video, categorie=categorie, video_url=video_url, now_memo=now_memo, memos=memos)
+    
+    # メモのテキストを受け取り、それを保存していく
+    else:
+        memotext = request.form.get("memotext")
+        now_memo.memo = memotext
+        db.session.commit()
+        return redirect(url_for("memodetail", id=video.id, memo_id=now_memo.id))
+
+"""
+# 動画の削除機能
+@app.route("/delete/<int:id>")
+@login_required
+def delete(id):
+    user_id = session["user_id"]
+    video = Videos.query.get(id)
+    count = Videos.query.filter_by(categorie_id=video.categorie_id).count()
+    if count == 1:
+        categorie = Categories.query.get(video.categorie_id)
+        db.session.delete(categorie)
+    db.session.delete(video)
+    db.session.commit()
+    return redirect("/")
+"""
+"""
+@app.route("/create")
+def create():
+    return render_template("create.html")
+"""
+
+# メモのタイムスタンプの登録機能
+@app.route("/memo/<int:id>", methods=["GET", "POST"])
+@login_required
+def memo(id):
+    video = Videos.query.get(id)
+    if request.method == "GET":
+        return render_template("memo.html", video=video)
+    else:
+        memotitle = request.form.get("memotitle")
+        timestamp = request.form.get("timestamp")
+        if len(timestamp) != 8:
+            return render_template("memo.html", video=video)
+        user_id = session["user_id"]
+        video_id = video.id
+        memo = ""
+        updatetime = datetime.datetime.now()
+        new_memo = Memos(memotitle=memotitle, memo=memo, timestamp=timestamp, updatetime=updatetime, user_id=user_id, video_id=video_id)
+        db.session.add(new_memo)
+        db.session.commit()
+        return redirect(url_for("detail", id=video_id))
