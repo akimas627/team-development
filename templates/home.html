@@ -74,10 +74,18 @@
                                                     <a href="detail/{{ video.id }}">
                                                         <div class="card__textbox">
                                                             <div class="card__titletext">
+<<<<<<< HEAD
                                                                 {{ video.videotitle }}
                                                             </div>
                                                             <div class="card__overviewtext">
                                                                 概要がはいります。概要がはいります。概要がはいります。概要がはいります。
+=======
+                                                                {{ video.videotitle | truncate(25, True) }}
+                                                                <!-- タイトルがはいります。タイトルがはいります。 -->
+                                                            </div>
+                                                            <div class="card__overviewtext">
+                                                                概要が入ります
+>>>>>>> 7b3fcad5ec9c456cb9c4a4299639f4d41886f8d2
                                                             </div>
                                                         </div>
                                                     </a>
