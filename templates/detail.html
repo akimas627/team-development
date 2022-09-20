@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block body %}
+    <a href="/memo/{{ video.id }}">メモ</a>
+    <h2>{{ video.videotitle }}</h2>
+    <p>{{ categorie.categorie }}</p>
+    {% if memos %}
+        {% for memo in memos %}
+            <label for="">
+                <a href="/detail/{{ video.id }}/{{memo.id}}">{{memo.memotitle}}</a>
+                <button>{{memo.timestamp}}</button>
+            </label>
+        {% endfor %}
+    {% endif %}
+    <iframe width="560" height="315" src="{{ video_url }}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+{% endblock %}
