@@ -39,7 +39,7 @@
         <!-- home part -->
         <div class="home">
             <div class="top_home">
-                <a class="registbutton" href="/register">Logout</a>
+                <a class="registbutton" href="/logout">Logout</a>
                 <a class="registbutton" href="/index">memo</a>
                 <h1>Youtube memo</h1>
             </div>
@@ -50,7 +50,7 @@
                         <span class="topic">ジャンル</span>
                             <ul>
                                 {% for categorie in categories %}
-                                    <li class="category_item"><a class="title" id="link_{{ categorie.categorie }}" href="javascript:void(0)">{{ categorie.categorie }}</a></li>
+                                    <li class="category_item"><a class="title" id="link_{{ categories.categorie }}" href="javascript:void(0)">{{ categories.categorie }}</a></li>
                                 {% endfor %}
                             </ul>
                     </div>
@@ -58,25 +58,30 @@
                 <!-- display notebook -->
                 <div class="flex_item main">
                     <div class="content">
+                        <!-- memo group of category  -->
                         {% for categorie in categories %}
                             <div class="content_sub">
                                 <div class="card_topic">
-                                    <h1 class="topic_title" id="{{ categorie.categorie }}">{{ categorie.categorie }}</h1>
+                                    <h1 class="topic_title" id="{{ categories.categorie }}">{{ categories.categorie }}</h1>
                                 </div>
 
                                 <div class="memo_card_group">
-                                    
+                                        <!-- each memo -->
                                         {% for video in videos %}
-                                            {% if categorie.id == video.categorie_id %}
+                                            {% if categories.id == video.categorie_id %}
                                                 <div class="memo_card">
-                                                    <a href="detail/{{ video.id }}"><img class="card__imgframe" src="{{ flont + video.url + back }}"></a>
+                                                    <!-- shumbnail -->
+                                                    <a href="detail/{{ video.id }}"><img class="card__imgframe" src="https://img.youtube.com/vi/{{ video.url }}/hqdefault.jpg"></a>
+                                                    <!-- title and memo details -->
                                                     <a href="detail/{{ video.id }}">
                                                         <div class="card__textbox">
                                                             <div class="card__titletext">
-                                                                タイトルがはいります。タイトルがはいります。
+                                                                {{ videos.videotitle | truncate(25, True) }}
+                                                                <!-- タイトルがはいります。タイトルがはいります。 -->
                                                             </div>
                                                             <div class="card__overviewtext">
-                                                                概要がはいります。概要がはいります。概要がはいります。概要がはいります。
+                                                                {{ videos.memos | truncate(40, True) }}
+                                                                <!-- 概要がはいります。概要がはいります。概要がはいります。概要がはいります。 -->
                                                             </div>
                                                         </div>
                                                     </a>
