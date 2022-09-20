@@ -50,7 +50,7 @@
                         <span class="topic">ジャンル</span>
                             <ul>
                                 {% for categorie in categories %}
-                                    <li class="category_item"><a class="title" id="link_{{ categories.categorie }}" href="javascript:void(0)">{{ categories.categorie }}</a></li>
+                                    <li class="category_item"><a class="title" id="link_{{ categorie.categorie }}" href="javascript:void(0)">{{ categorie.categorie }}</a></li>
                                 {% endfor %}
                             </ul>
                     </div>
@@ -62,13 +62,13 @@
                         {% for categorie in categories %}
                             <div class="content_sub">
                                 <div class="card_topic">
-                                    <h1 class="topic_title" id="{{ categories.categorie }}">{{ categories.categorie }}</h1>
+                                    <h1 class="topic_title" id="{{ categorie.categorie }}">{{ categorie.categorie }}</h1>
                                 </div>
 
                                 <div class="memo_card_group">
                                         <!-- each memo -->
                                         {% for video in videos %}
-                                            {% if categories.id == video.categorie_id %}
+                                            {% if categorie.id == video.categorie_id %}
                                                 <div class="memo_card">
                                                     <!-- shumbnail -->
                                                     <a href="detail/{{ video.id }}"><img class="card__imgframe" src="https://img.youtube.com/vi/{{ video.url }}/hqdefault.jpg"></a>
@@ -76,12 +76,11 @@
                                                     <a href="detail/{{ video.id }}">
                                                         <div class="card__textbox">
                                                             <div class="card__titletext">
-                                                                {{ videos.videotitle | truncate(25, True) }}
+                                                                {{ video.videotitle | truncate(25, True) }}
                                                                 <!-- タイトルがはいります。タイトルがはいります。 -->
                                                             </div>
                                                             <div class="card__overviewtext">
-                                                                {{ videos.memos | truncate(40, True) }}
-                                                                <!-- 概要がはいります。概要がはいります。概要がはいります。概要がはいります。 -->
+                                                                概要が入ります
                                                             </div>
                                                         </div>
                                                     </a>
