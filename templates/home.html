@@ -11,30 +11,43 @@
 
     <body>
         <!-- add memo button-->
-        <a href="#add_memo" class="add_memo"><div class="icon-plus"></div></a>
-        <section id="add_memo" class="hide-area">
-            <div class="container">
-                <div class="section">
-                    <h1>create</h1>
-                    <form action="/" method="post">
-                        <h2>メモタイトル</h2>
-                        <div class="mailaddress section">
-                            <input autocomplete="off" autofocus id="videotitle" name="videotitle" placeholder="メモタイトル" type="text">
+        <!-- <a href="#add_memo" class="add_memo"><div class="icon-plus"></div></a> -->
+        <label class="icon-plus" for="pop-up"></label>
+        <input type="checkbox" id="pop-up">
+            <div class="overlay">
+                <div class="window">
+                    <label class="close" for="pop-up"></label>
+                    <div class="container">
+                        <div class="section_addmemo">
+                            <h1 class="title_addmemo">create</h1>
+                            <form action="/" method="post">
+                                <h2 class="section_addmemo">メモタイトル</h2>
+                                <div>
+                                    <input class="input-style" autocomplete="off" autofocus id="videotitle" name="videotitle" placeholder="メモタイトル" type="text">
+                                </div>
+                                <div>
+                                    <h2 class="section_addmemo">url</h2>
+                                    <input class="input-style" id="url" name="url" placeholder="url" type="text">
+                                </div>
+                                <div>
+                                    <h2 class="section_addmemo">ジャンル</h2>
+                                    <!-- <select class="genre" onchange="changeTerm()">
+                                        <option disabled>ジャンルを選ぶ</option>
+                                        <option value="create-genre">新しいジャンルを作る</option>
+                                        {% for categorie in categories %}
+                                            <option value="{{ categorie.categorie }}"id="categorie" name="categorie">{{ categorie.categorie }}</option>
+                                        {% endfor %}
+                                    </select>
+                                    <input class="input-genre" id="input-genre" name="categorie" placeholder="新しいジャンルを作る" type="text"> -->
+                                    <input class="input-style" id="categorie" name="categorie" placeholder="ジャンル" type="text">
+                                </div>
+        
+                                <input type="submit" name="regist" value="登録">
+                            </form>
                         </div>
-                        <div class="password section">
-                            <h2>url</h2>
-                            <input id="url" name="url" placeholder="url" type="text">
-                        </div>
-                        <div class="password section">
-                            <h2>ジャンル</h2>
-                            <input id="categorie" name="categorie" placeholder="カテゴリー" type="text">
-                        </div>
-
-                        <input type="submit" name="regist" value="登録">
-                    </form>
+                    </div>
                 </div>
             </div>
-        </section>
 
 
         <!-- home part -->
@@ -45,17 +58,19 @@
                 <h1>Youtube memo</h1>
             </div>
             <main class="main">
+
                 <!-- navigation var -->
                 <nav class="flex_item nav_var">
                     <div class="category">
                         <span class="topic">ジャンル</span>
                             <ul>
                                 {% for categorie in categories %}
-                                    <li class="category_item"><a class="title" id="link_{{ categorie.categorie }}" href="javascript:void(0)">{{ categorie.categorie }}</a></li>
+                                    <li class="category_item"><a class="title" id="link_{{ categorie.categorie }}" href="javascript:void(0)">{{ categorie.categorie | truncate(8, True)  }}</a></li>
                                 {% endfor %}
                             </ul>
                     </div>
                 </nav>
+
                 <!-- display notebook -->
                 <div class="flex_item main">
                     <div class="content">
@@ -74,18 +89,14 @@
                                                     <a href="detail/{{ video.id }}">
                                                         <div class="card__textbox">
                                                             <div class="card__titletext">
-<<<<<<< HEAD
-                                                                {{ video.videotitle }}
-                                                            </div>
-                                                            <div class="card__overviewtext">
-                                                                概要がはいります。概要がはいります。概要がはいります。概要がはいります。
-=======
                                                                 {{ video.videotitle | truncate(25, True) }}
-                                                                <!-- タイトルがはいります。タイトルがはいります。 -->
                                                             </div>
                                                             <div class="card__overviewtext">
-                                                                概要が入ります
->>>>>>> 7b3fcad5ec9c456cb9c4a4299639f4d41886f8d2
+                                                                {% if not video.memos %}
+                                                                    メモはまだありません．．．
+                                                                {% else %}
+                                                                    {{ video.memos | truncate(40, True)}}
+                                                                {% endif %}
                                                             </div>
                                                         </div>
                                                     </a>
@@ -114,6 +125,18 @@
         crossorigin="anonymous"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/Modaal/0.4.4/js/modaal.min.js"></script>
         <script src="/static/js/home.js"></script>
+        <script type="text/javascript">
+            data =  json.dumps('{{ categories | safe }}');
+            
+            for(let i = 0; i < data.length; i++){
+                $(document).ready(function () {
+                $('#link_'.data[i].categorie).on('click', function () {
+                  $(window).scrollTop($('#'.data[i].categorie).position().top);
+                });
+            });
+            }
+             
+        </script>
 
     </body>
 </html>
