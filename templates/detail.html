@@ -1,16 +1,52 @@
 {% extends "base.html" %}
-
+{% block head %}
+    <link href="/static/css/home.css" rel="stylesheet">
+{% endblock %}
 {% block body %}
-    <a href="/memo/{{ video.id }}">メモ</a>
-    <h2>{{ video.videotitle }}</h2>
-    <p>{{ categorie.categorie }}</p>
+<!-- create memo -pop-up- -->
+<label class="icon-plus" for="pop-up"></label>
+<input type="checkbox" id="pop-up">
+    <div class="overlay">
+        <div class="window">
+            <label class="close" for="pop-up"></label>
+            <div class="container">
+                <div class="section_addmemo">
+                    <h1 class="title_addmemo">create new memo</h1>
+                    <form action="/memo/{{ video.id }}" method="post">
+                        <h2 class="section_addmemo">メモタイトル</h2>
+                        <div>
+                            <input class="input-style" autocomplete="off" autofocus id="memotitle" name="memotitle" placeholder="メモタイトル" type="text">
+                        </div>
+                        <div>
+                            <h2 class="section_addmemo">timestamp</h2>
+                            <input class="input-style" id="timestamp" name="timestamp" placeholder="timestamp" type="time" step="1" max="11:59:59" required>
+                        </div>
+
+                        <input type="submit" name="regist" value="登録">
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- <a href="/memo/{{ video.id }}">メモ</a> -->
+    <h1>{{ video.videotitle }}</h1>
+    <p>ジャンル：{{ categorie.categorie }}</p>
     {% if memos %}
         {% for memo in memos %}
             <label for="">
-                <a href="/detail/{{ video.id }}/{{memo.id}}">{{memo.memotitle}}</a>
-                <button>{{memo.timestamp}}</button>
+                <a class="timestamp" href="/detail/{{ video.id }}/{{memo.id}}">{{ memo.memotitle }}</a>
+                <!-- <button>{{ memo.timestamp }}</button> -->
             </label>
         {% endfor %}
     {% endif %}
-    <iframe width="560" height="315" src="{{ video_url }}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    <div class="flex_item video-wrap">
+        <div class="video">
+            <iframe width="560" height="315" src="{{ video_url }}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        </div>
+    </div> 
+    
+    <div class="flex_item memo">
+
+    </div>
 {% endblock %}
