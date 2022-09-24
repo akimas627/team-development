@@ -11,7 +11,7 @@
     border-radius: 100vh;
 }
 
-
+/*ハンバーガーメニュー*/
 .menu-btn {
   position: fixed;
   top: 10px;
@@ -100,6 +100,8 @@
 #menu-btn-check:checked ~ .menu-content {
   left: 70%;/*メニューを画面内へ*/
 }
+
+/*end ハンバーガーメニュー*/
 
 /* 動画の場所や大きさの設定 */
 .video-wrap{
