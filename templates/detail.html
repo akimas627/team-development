@@ -4,9 +4,12 @@
     <a href="/memo/{{ video.id }}">メモ</a>
     <h2>{{ video.videotitle }}</h2>
     <p>{{ categorie.categorie }}</p>
+    <a href="/edit/{{ video.id }}">編集</a>
+    <a href="/delete/{{ video.id }}">削除</a>
     {% if memos %}
         {% for memo in memos %}
             <label for="">
+                
                 <a href="/detail/{{ video.id }}/{{memo.id}}">{{memo.memotitle}}</a>
                 <button>{{memo.timestamp}}</button>
             </label>
