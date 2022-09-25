@@ -51,7 +51,6 @@
 
 
         <!-- home part -->
-        {{ categorie }}
         <div class="home">
             <div class="top_home">
                 <a class="registbutton" href="/logout">Logout</a>
@@ -118,24 +117,24 @@
                 </div>
             </footer>
         </div>
-
+       {{categories[1].categorie}} 
         <script
         src="https://code.jquery.com/jquery-3.4.1.min.js"
         integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
         crossorigin="anonymous"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/Modaal/0.4.4/js/modaal.min.js"></script>
         <script src="/static/js/home.js"></script>
+
         <script type="text/javascript">
-            data =  json.dumps('{{ categories | safe }}');
-            
-            for(let i = 0; i < data.length; i++){
+            const categories = {{json_categories}};
+            for(const category of categories) {
+                console.log(category);
                 $(document).ready(function () {
-                $('#link_'.data[i].categorie).on('click', function () {
-                  $(window).scrollTop($('#'.data[i].categorie).position().top);
+                $('#link_'+ category.categorie).on('click', function () {
+                  $(window).scrollTop($('#'+category.categorie).position().top);
                 });
             });
             }
-             
         </script>
 
     </body>
