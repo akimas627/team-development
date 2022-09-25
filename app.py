@@ -1,10 +1,11 @@
 import os
 import datetime
+import json
 from flask import Flask, render_template, redirect, request, flash, session, url_for
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import UserMixin, LoginManager, login_user, logout_user, login_required
 from werkzeug.security import check_password_hash, generate_password_hash
-from helpers import is_check_email
+from helpers import check_email
 
 app = Flask(__name__)
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///videomemo.db"
@@ -72,9 +73,16 @@ def home():
     if request.method == "GET":
         # userが保持してるカテゴリをすべて取得
         categories = Categories.query.filter_by(user_id=user_id).all()
-        # userが保持してるvideoをすべて取得
+       #json形式にして保存
+        data=[]
+        for categorie in categories:
+            data.append(categorie)
+        #data = db.session.query(Categories.categorie).filter_by(user_id=user_id)
+        json_categories = 0
+        #json.dumps(data)
+       # userが保持してるvideoをすべて取得
         videos = Videos.query.filter_by(user_id=user_id).all()
-        return render_template("home.html", videos=videos, categories=categories)
+        return render_template("home.html", videos=videos, categories=categories, json_categories=json_categories)
 
     # 動画登録機能
     else:
@@ -123,7 +131,7 @@ def register():
         sub_password = request.form.get("subpassword") 
 
         # emailやpasswordの入力がない場合などのエラー処理
-        if not email or not is_check_email(email):
+        if not email or not check_email(email):
             flash("emailを入力してください")
             return render_template("register.html")
         if not main_password:
@@ -163,7 +171,7 @@ def login():
         password = request.form.get("password")
 
         # エラー処理
-        if not email or not is_check_email(email):
+        if not email or not check_email(email):
             flash("有効なemailを入力してください")
             return render_template("login.html")        
         if not password:
