@@ -311,11 +311,11 @@ def delete(id):
     db.session.commit()
     return redirect("/")
 
-"""
+
 @app.route("/create")
 def create():
     return render_template("create.html")
-"""
+
 
 # メモのタイムスタンプの登録機能
 @app.route("/memo/<int:id>", methods=["GET", "POST"])
