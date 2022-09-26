@@ -1,22 +1,36 @@
 {% extends "base.html" %}
 
+
+{% block head %}
+    <!-- <link href="/static/css/memo.css" rel="stylesheet"> -->
+{% endblock %}
+
+
 {% block body %}
     <a href="/memo/{{ video.id }}">メモ</a>
     <h2>{{ video.videotitle }}</h2>
-    <p>{{ categorie.categorie }}</p>
+    <p>ジャンル : {{ categorie.categorie }}</p>
     {% if now_memo %}
-        <iframe width="560" height="315" src="{{ video_url }}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    <div class="memo-contents">
+        <div class="flex_item video-group">
+            <div class="video-wrap">
+                <div class="video">
+                    <iframe width="560" height="315" src="{{ video_url }}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                </div>
+            </div>
             {% for memo in memos %}
                 <label for="">
                     <a href="/detail/{{ video.id }}/{{ memo.id }}">{{memo.memotitle}}</a>
-                    <button>{{memo.timestamp}}</button>
+                    <!-- <button>{{ memo.timestamp }}</button> -->
                 </label>
             {% endfor %}
-        <form action="/detail/{{ video.id }}/{{ now_memo.id }}" method="post">
-            <textarea name="memotext" id="memotext" cols="30" rows="10">{{ now_memo.memo }}</textarea>
-            <input type="submit" value="保存">
-        </form>    
+        </div>
+        <div class="flex_item memo-group">
+            <form action="/detail/{{ video.id }}/{{ now_memo.id }}" method="post">
+                <textarea name="memotext" id="memotext">{{ now_memo.memo }}</textarea>
+                <input class="registbutton" type="submit" value="保存">
+            </form>    
+        </div>
+    </div>
     {% endif %}
-    
-    
-{% endblock %}
+{% endblock %} 

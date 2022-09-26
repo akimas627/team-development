@@ -102,13 +102,24 @@
 }
 
 /*end ハンバーガーメニュー*/
+=======
+.memo-contents{
+    display: flex;
+}
+
+.video-group{
+    display: block;
+}
+.memo-group{
+    display: block;
+}
 
 /* 動画の場所や大きさの設定 */
 .video-wrap{
-    
     max-width: 50%;
     margin-left: auto;
     margin-right: 20px;
+    min-width: 300px;
 }
 
 /* 動画を囲うdiv */
@@ -132,4 +143,12 @@
 
   .timestamp{
     
+  }
+
+  textarea{
+    display: inline-block;
+    resize: both;
+    min-width: 100px;
+    min-height: 300px;
+    max-width: 800px;
   }

@@ -1,10 +1,11 @@
 import os
 import datetime
+import json
 from flask import Flask, render_template, redirect, request, flash, session, url_for
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import UserMixin, LoginManager, login_user, logout_user, login_required
 from werkzeug.security import check_password_hash, generate_password_hash
-from helpers import is_check_email
+from helpers import check_email
 
 app = Flask(__name__)
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///videomemo.db"
@@ -72,9 +73,16 @@ def home():
     if request.method == "GET":
         # userが保持してるカテゴリをすべて取得
         categories = Categories.query.filter_by(user_id=user_id).all()
-        # userが保持してるvideoをすべて取得
+       #json形式にして保存
+        data=[]
+        for categorie in categories:
+            data.append(categorie)
+        #data = db.session.query(Categories.categorie).filter_by(user_id=user_id)
+        json_categories = 0
+        #json.dumps(data)
+       # userが保持してるvideoをすべて取得
         videos = Videos.query.filter_by(user_id=user_id).all()
-        return render_template("home.html", videos=videos, categories=categories)
+        return render_template("home.html", videos=videos, categories=categories, json_categories=json_categories)
 
     # 動画登録機能
     else:
@@ -123,7 +131,7 @@ def register():
         sub_password = request.form.get("subpassword") 
 
         # emailやpasswordの入力がない場合などのエラー処理
-        if not email or not is_check_email(email):
+        if not email or not check_email(email):
             flash("emailを入力してください")
             return render_template("register.html")
         if not main_password:
@@ -163,7 +171,7 @@ def login():
         password = request.form.get("password")
 
         # エラー処理
-        if not email or not is_check_email(email):
+        if not email or not check_email(email):
             flash("有効なemailを入力してください")
             return render_template("login.html")        
         if not password:
@@ -215,6 +223,46 @@ def detail(id):
     # メモが存在しない場合はメモの情報は渡さない
     return render_template("detail.html", video=video, video_url=video_url, categorie=categorie)
 
+# 動画のタイトル変更、ジャンル変更
+
+@app.route("/edit/<int:id>", methods=["GET", "POST"])
+@login_required
+def edit(id):
+    video = Videos.query.get(id)
+    if request.method == "GET":    
+        categorie = Categories.query.get(video.categorie_id)
+        return render_template("edit.html", video=video, categorie=categorie)
+    else:
+        user_id = session["user_id"]
+        videotitle = request.form.get("videotitle")
+        categorie = request.form.get("categorie")
+        
+        if not videotitle:
+            return render_template("edit.html")
+        if not categorie:
+            return render_template("edit.html")
+        
+        # カテゴリーが存在しない場合
+        if not Categories.query.filter_by(categorie=categorie, user_id=user_id).first():
+            new_categorie = Categories(categorie=categorie, user_id=user_id)
+            db.session.add(new_categorie)
+            db.session.commit()
+
+        # videotitleとcategorieの変更の反映
+        categorie = Categories.query.filter_by(categorie=categorie, user_id=user_id).first()
+        tmp = video.categorie_id
+        video.videotitle = videotitle
+        video.categorie_id = categorie.id
+        db.session.commit()
+
+        # カテゴリーに含まれるvideoがなくなった時の処理
+        if not Videos.query.filter_by(categorie_id=tmp, user_id=user_id).first():
+            categorie = Categories.query.filter_by(id=tmp).first()
+            db.session.delete(categorie)
+            db.session.commit()
+        return redirect("/")
+
+
 # メモの詳細機能
 @app.route("/detail/<int:id>/<int:memo_id>", methods=["GET", "POST"])
 @login_required
@@ -242,21 +290,27 @@ def memodetail(id, memo_id):
         db.session.commit()
         return redirect(url_for("memodetail", id=video.id, memo_id=now_memo.id))
 
-"""
+
 # 動画の削除機能
 @app.route("/delete/<int:id>")
 @login_required
 def delete(id):
     user_id = session["user_id"]
     video = Videos.query.get(id)
+    memos = Memos.query.filter_by(user_id=user_id, video_id=video.id).all()
+    # memoの削除
+    for memo in memos:
+        db.session.delete(memo)
     count = Videos.query.filter_by(categorie_id=video.categorie_id).count()
     if count == 1:
+    # カテゴリーに登録されているのが削除するものだけの場合はカテゴリーも削除する
         categorie = Categories.query.get(video.categorie_id)
         db.session.delete(categorie)
+    # videoの削除
     db.session.delete(video)
     db.session.commit()
     return redirect("/")
-"""
+
 """
 @app.route("/create")
 def create():
