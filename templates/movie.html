@@ -7,9 +7,11 @@
 
 
 {% block body %}
+    
     <a href="/memo/{{ video.id }}">メモ</a>
     <h2>{{ video.videotitle }}</h2>
     <p>ジャンル : {{ categorie.categorie }}</p>
+
     {% if now_memo %}
     <div class="memo-contents">
         <div class="flex_item video-group">
@@ -32,5 +34,7 @@
             </form>    
         </div>
     </div>
+
+        <a href="/delete/{{ video.id }}/{{ now_memo.id }}">メモ削除</a>
     {% endif %}
 {% endblock %} 
