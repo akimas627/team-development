@@ -1,9 +1,11 @@
 {% extends "base.html" %}
 
 {% block body %}
+    
     <a href="/memo/{{ video.id }}">メモ</a>
     <h2>{{ video.videotitle }}</h2>
     <p>{{ categorie.categorie }}</p>
+    
     {% if now_memo %}
         <iframe width="560" height="315" src="{{ video_url }}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
             {% for memo in memos %}
@@ -12,6 +14,7 @@
                     <button>{{memo.timestamp}}</button>
                 </label>
             {% endfor %}
+        <a href="/delete/{{ video.id }}/{{ now_memo.id }}">メモ削除</a>
         <form action="/detail/{{ video.id }}/{{ now_memo.id }}" method="post">
             <textarea name="memotext" id="memotext" cols="30" rows="10">{{ now_memo.memo }}</textarea>
             <input type="submit" value="保存">
