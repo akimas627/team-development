@@ -73,14 +73,14 @@ def home():
     if request.method == "GET":
         # userが保持してるカテゴリをすべて取得
         categories = Categories.query.filter_by(user_id=user_id).all()
-       #json形式にして保存
+        #json形式にして保存
         data=[]
         for categorie in categories:
             data.append(categorie)
         #data = db.session.query(Categories.categorie).filter_by(user_id=user_id)
         json_categories = 0
         #json.dumps(data)
-       # userが保持してるvideoをすべて取得
+        # userが保持してるvideoをすべて取得
         videos = Videos.query.filter_by(user_id=user_id).all()
         return render_template("home.html", videos=videos, categories=categories, json_categories=json_categories)
 
