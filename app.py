@@ -121,7 +121,17 @@ def home():
 
 @app.route("/create")
 def create():
-    return render_template("create.html")
+    user_id = session["user_id"]
+    categories = Categories.query.filter_by(user_id=user_id).all()
+    # カテゴリーをjsonに適した形に変換
+    categories_json = []
+    for categorie in categories:
+        categorie_dict = {}
+        categorie_dict["id"] = categorie.id
+        categorie_dict["categorie"] = categorie.categorie
+        categories_json.append(categorie_dict)
+
+    return render_template("create.html", categories=categories, categories_json=categories_json)
 
 
 # 新規登録
