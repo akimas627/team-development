@@ -74,21 +74,14 @@ def home():
     if request.method == "GET":
         # userが保持してるカテゴリをすべて取得
         categories = Categories.query.filter_by(user_id=user_id).all()
-       #json形式にして保存
-        """ data=[]
-        for categorie in categories:
-            data.append(categorie) """
+        # カテゴリーをjsonに適した形に変換
         categories_json = []
         for categorie in categories:
             categorie_dict = {}
             categorie_dict["id"] = categorie.id
             categorie_dict["categorie"] = categorie.categorie
             categories_json.append(categorie_dict)
-        print(categories_json)
-        #data = db.session.query(Categories.categorie).filter_by(user_id=user_id)
-        #json_categories = 0
-        #json.dumps(data)
-       # userが保持してるvideoをすべて取得
+        # userが保持してるvideoをすべて取得
         videos = Videos.query.filter_by(user_id=user_id).all()
         return render_template("home.html", videos=videos, categories=categories, json=categories_json)
 
@@ -124,6 +117,20 @@ def home():
         db.session.add(new_video)
         db.session.commit()
         return redirect(url_for("home"))
+
+@app.route("/create")
+def create():
+    user_id = session["user_id"]
+    categories = Categories.query.filter_by(user_id=user_id).all()
+    # カテゴリーをjsonに適した形に変換
+    categories_json = []
+    for categorie in categories:
+        categorie_dict = {}
+        categorie_dict["id"] = categorie.id
+        categorie_dict["categorie"] = categorie.categorie
+        categories_json.append(categorie_dict)
+
+    return render_template("create.html", categories=categories, categories_json=categories_json)
 
 
 # 新規登録
@@ -232,7 +239,6 @@ def detail(id):
     return render_template("detail.html", video=video, video_url=video_url, categorie=categorie)
 
 # 動画のタイトル変更、ジャンル変更
-
 @app.route("/edit/<int:id>", methods=["GET", "POST"])
 @login_required
 def edit(id):
@@ -276,7 +282,7 @@ def edit(id):
 @login_required
 def memodetail(id, memo_id):
     video = Videos.query.get(id)
-    # 現在のメモ情報を取得
+    # 現在のメモ情報を取得(主キー)
     now_memo = Memos.query.get(memo_id)
     
     # 各メモを動画とともに表示する
@@ -298,6 +304,13 @@ def memodetail(id, memo_id):
         db.session.commit()
         return redirect(url_for("memodetail", id=video.id, memo_id=now_memo.id))
 
+# メモの削除機能
+@app.route("/delete/<int:id>/<int:memo_id>")
+def memodelete(id, memo_id):
+    memo = Memos.query.get(memo_id)
+    db.session.delete(memo)
+    db.session.commit()
+    return redirect(url_for("detail", id=id))
 
 # 動画の削除機能
 @app.route("/delete/<int:id>")
@@ -319,11 +332,19 @@ def delete(id):
     db.session.commit()
     return redirect("/")
 
-"""
-@app.route("/create")
-def create():
-    return render_template("create.html")
-"""
+# メモのタイトルとタイムスタンプの変更機能
+@app.route("/memoedit/<int:memo_id>", methods=["GET", "POST"])
+@login_required
+def memoedit(memo_id):
+    memo = Memos.query.get(memo_id)
+    if request.method == "GET":
+        return render_template("memoedit.html", memo=memo)
+    else:
+        memotitle = request.form.get("memotitle")
+        timestamp = request.form.get("timestamp")
+        if len(timestamp) != 8:
+            return render_template("memoedit.html", memo=memo)
+
 
 # メモのタイムスタンプの登録機能
 @app.route("/memo/<int:id>", methods=["GET", "POST"])

@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block body %}
+    <form action="/edit/{{ video.id }}" method="post">
+        <h2>メモタイトル</h2>
+        <input autocomplete="off" autofocus id="videotitle" name="videotitle" type="text" value="{{ video.videotitle }}">
+        <h2>ジャンル</h2>
+        <input id="categorie" name="categorie" placeholder="カテゴリー" type="text" value="{{ categorie.categorie }}">
+        <input type="submit" name="edit" value="変更"></input>
+    </form>
+{% endblock %}

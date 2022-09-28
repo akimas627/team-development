@@ -31,17 +31,13 @@
                                 </div>
                                 <div>
                                     <h2 class="section_addmemo">ジャンル</h2>
-                                    <!-- <select class="genre" onchange="changeTerm()">
-                                        <option disabled>ジャンルを選ぶ</option>
-                                        <option value="create-genre">新しいジャンルを作る</option>
+                                    <datalist id="janrecategorie">
                                         {% for categorie in categories %}
-                                            <option value="{{ categorie.categorie }}"id="categorie" name="categorie">{{ categorie.categorie }}</option>
+                                            <option value="{{ categorie.categorie }}"id="categorie" name="categorie">
                                         {% endfor %}
-                                    </select>
-                                    <input class="input-genre" id="input-genre" name="categorie" placeholder="新しいジャンルを作る" type="text"> -->
-                                    <input class="input-style" id="categorie" name="categorie" placeholder="ジャンル" type="text">
+                                    </datalist>
+                                    <input autocomplete="off" class="input-style" id="categorie" list="janrecategorie" name="categorie" placeholder="ジャンル" type="text">
                                 </div>
-        
                                 <input type="submit" name="regist" value="登録">
                             </form>
                         </div>
@@ -78,7 +74,6 @@
                                 <div class="card_topic">
                                     <h1 class="topic_title" id="{{ categorie.categorie }}">{{ categorie.categorie }}</h1>
                                 </div>
-
                                 <div class="memo_card_group">
                                     
                                         {% for video in videos %}
@@ -136,6 +131,7 @@
                     });                                                   
                 }
             });  
+
         </script>
 
     </body>

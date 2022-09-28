@@ -9,6 +9,7 @@
 
 
 {% block body %}
+<<<<<<< HEAD
 <!-- create memo -pop-up- -->
 <input type="checkbox" id="pop-up">
     <div class="overlay">
@@ -29,6 +30,19 @@
 
                         <input type="submit" name="regist" value="登録">
                     </form>
+=======
+    
+    <a href="/memo/{{ video.id }}">メモ</a>
+    <h2>{{ video.videotitle }}</h2>
+    <p>ジャンル : {{ categorie.categorie }}</p>
+
+    {% if now_memo %}
+    <div class="memo-contents">
+        <div class="flex_item video-group">
+            <div class="video-wrap">
+                <div class="video">
+                    <iframe width="560" height="315" src="{{ video_url }}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+>>>>>>> 648557425371791c097b8f39ec6cf28c8cc8aac8
                 </div>
             </div>
         </div>
@@ -67,6 +81,8 @@
             </div>
         </div>
     </div>
+
+        <a href="/delete/{{ video.id }}/{{ now_memo.id }}">メモ削除</a>
     {% endif %}
     <label class="icon-plus" for="pop-up"></label>
     <script>
