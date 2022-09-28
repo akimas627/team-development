@@ -9,9 +9,8 @@
 
 
 {% block body %}
-<<<<<<< HEAD
-<!-- create memo -pop-up- -->
-<input type="checkbox" id="pop-up">
+    <!-- create memo -pop-up- -->
+    <input type="checkbox" id="pop-up">
     <div class="overlay">
         <div class="window">
             <label class="close" for="pop-up"></label>
@@ -30,57 +29,45 @@
 
                         <input type="submit" name="regist" value="登録">
                     </form>
-=======
-    
-    <a href="/memo/{{ video.id }}">メモ</a>
-    <h2>{{ video.videotitle }}</h2>
-    <p>ジャンル : {{ categorie.categorie }}</p>
-
-    {% if now_memo %}
-    <div class="memo-contents">
-        <div class="flex_item video-group">
-            <div class="video-wrap">
-                <div class="video">
-                    <iframe width="560" height="315" src="{{ video_url }}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
->>>>>>> 648557425371791c097b8f39ec6cf28c8cc8aac8
                 </div>
             </div>
         </div>
+    
     </div>
 
-    <a href="/memo/{{ video.id }}">メモ</a>
+    <!-- <a href="/memo/{{ video.id }}">メモ</a> -->
     <h2>{{ video.videotitle }}</h2>
     <p>メモタイトル : {{ now_memo.memotitle }}</p>
     {% if now_memo %}
-    <div class="memo-contents">
-        
-        <div class="flex_item memo-group">
-            <form action="/detail/{{ video.id }}/{{ now_memo.id }}" method="post">
-                <div class="FlexTextarea" id="FlexTextarea">
-                    <div class="FlexTextarea__dummy" id="FlexTextarea__dummy" aria-hidden="true"></div>
-                    <textarea name="memotext" id="memotext" placeholder="メモを書き込む">{{ now_memo.memo }}</textarea>
-                </div>
-                <input class="registbutton" type="submit" value="保存">
-            </form>    
-        </div>
-        <div class="flex_item video-group">
-            <div class="static-position">
-                <div class="video-wrap">
-                    <div class="video">
-                        <iframe width="560" height="315" src="{{ video_url }}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        <div class="memo-contents">
+            
+            <div class="flex_item memo-group">
+                <form action="/detail/{{ video.id }}/{{ now_memo.id }}" method="post">
+                    <div class="FlexTextarea" id="FlexTextarea">
+                        <div class="FlexTextarea__dummy" id="FlexTextarea__dummy" aria-hidden="true"></div>
+                        <textarea name="memotext" id="memotext" placeholder="メモを書き込む">{{ now_memo.memo }}</textarea>
                     </div>
-                </div>
-                {% for memo in memos %}
-                    <div class="timestamp-button">
-                        <label for="">
-                            <a href="/detail/{{ video.id }}/{{ memo.id }}">{{memo.memotitle}}</a>
-                            <!-- <button>{{ memo.timestamp }}</button> -->
-                        </label>
+                    <input class="registbutton" type="submit" value="保存">
+                </form>    
+            </div>
+            <div class="flex_item video-group">
+                <div class="static-position">
+                    <div class="video-wrap">
+                        <div class="video">
+                            <iframe width="560" height="315" src="{{ video_url }}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                        </div>
                     </div>
-                {% endfor %}
+                    {% for memo in memos %}
+                        <div class="timestamp-button">
+                            <label for="">
+                                <a href="/detail/{{ video.id }}/{{ memo.id }}">{{memo.memotitle}}</a>
+                                <!-- <button>{{ memo.timestamp }}</button> -->
+                            </label>
+                        </div>
+                    {% endfor %}
+                </div>
             </div>
         </div>
-    </div>
 
         <a href="/delete/{{ video.id }}/{{ now_memo.id }}">メモ削除</a>
     {% endif %}
