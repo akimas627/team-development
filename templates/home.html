@@ -117,7 +117,7 @@
                 </div>
             </footer>
         </div>
-       {{categories[1].categorie}} 
+
         <script
         src="https://code.jquery.com/jquery-3.4.1.min.js"
         integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
@@ -126,15 +126,16 @@
         <script src="/static/js/home.js"></script>
 
         <script type="text/javascript">
-            const categories = {{json_categories}};
-            for(const category of categories) {
-                console.log(category);
-                $(document).ready(function () {
-                $('#link_'+ category.categorie).on('click', function () {
-                  $(window).scrollTop($('#'+category.categorie).position().top);
-                });
-            });
-            }
+            //const categories = {{json}};
+            var categories = JSON.parse('{{json | tojson | safe}}');
+            $(function () {
+                for(category of categories) {
+                    const target= category.categorie;    
+                    $('#link_'+target ).on('click', function () {
+                        $(window).scrollTop($('#'+target).position().top);
+                    });                                                   
+                }
+            });  
         </script>
 
     </body>
