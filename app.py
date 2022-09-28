@@ -1,7 +1,7 @@
 import os
 import datetime
 import json
-from flask import Flask, render_template, redirect, request, flash, session, url_for
+from flask import Flask, render_template, redirect, request, flash, session, url_for, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import UserMixin, LoginManager, login_user, logout_user, login_required
 from werkzeug.security import check_password_hash, generate_password_hash
@@ -10,6 +10,7 @@ from helpers import check_email
 app = Flask(__name__)
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///videomemo.db"
 app.config["SECRET_KEY"] = os.urandom(24)
+app.config["JSON_AS_ASCII"] = False
 db = SQLAlchemy(app)
 
 login_manager = LoginManager()
@@ -74,15 +75,22 @@ def home():
         # userが保持してるカテゴリをすべて取得
         categories = Categories.query.filter_by(user_id=user_id).all()
        #json形式にして保存
-        data=[]
+        """ data=[]
         for categorie in categories:
-            data.append(categorie)
+            data.append(categorie) """
+        categories_json = []
+        for categorie in categories:
+            categorie_dict = {}
+            categorie_dict["id"] = categorie.id
+            categorie_dict["categorie"] = categorie.categorie
+            categories_json.append(categorie_dict)
+        print(categories_json)
         #data = db.session.query(Categories.categorie).filter_by(user_id=user_id)
-        json_categories = 0
+        #json_categories = 0
         #json.dumps(data)
        # userが保持してるvideoをすべて取得
         videos = Videos.query.filter_by(user_id=user_id).all()
-        return render_template("home.html", videos=videos, categories=categories, json_categories=json_categories)
+        return render_template("home.html", videos=videos, categories=categories, json=categories_json)
 
     # 動画登録機能
     else:
