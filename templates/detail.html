@@ -4,7 +4,6 @@
 {% endblock %}
 {% block body %}
 <!-- create memo -pop-up- -->
-<label class="icon-plus" for="pop-up"></label>
 <input type="checkbox" id="pop-up">
     <div class="overlay">
         <div class="window">
@@ -30,23 +29,40 @@
     </div>
 
     <!-- <a href="/memo/{{ video.id }}">メモ</a> -->
-    <h1>{{ video.videotitle }}</h1>
-    <p>ジャンル：{{ categorie.categorie }}</p>
-    {% if memos %}
-        {% for memo in memos %}
-            <label for="">
-                <a class="timestamp" href="/detail/{{ video.id }}/{{memo.id}}">{{ memo.memotitle }}</a>
-                <!-- <button>{{ memo.timestamp }}</button> -->
-            </label>
-        {% endfor %}
-    {% endif %}
-    <div class="flex_item video-wrap">
-        <div class="video">
-            <iframe width="560" height="315" src="{{ video_url }}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-        </div>
-    </div> 
+    <h1 class="video-title">{{ video.videotitle }}</h1>
+    <p class="ganre-title">ジャンル：{{ categorie.categorie }}</p>
     
-    <div class="flex_item memo">
+    <main class="main">
+        {% if memos %}
+            <div class="flex-item timestamp-wrap">
+                <u class="timestamp-title">memo list</u>
+                <ul>
+                    {% for memo in memos %}
+                        <li>
+                            <label for="">
+                                <a class="timestamp" href="/detail/{{ video.id }}/{{memo.id}}">{{ memo.memotitle }}</a>
+                                <!-- <button>{{ memo.timestamp }}</button> -->
+                            </label>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        {% else %}
+            <div class="flex-item timestamp-wrap">
+                <h2 class="timestamp-title">no memo</h2>
+                <label class="timestamp" for="pop-up" style="border: solid; border-color: #f5f5f5;">push here and create new memo</label>
+            </div>
+        {% endif %}
 
-    </div>
+        <div class="flex-item video-center">
+            <div class="video">
+                <iframe width="560" height="315" src="{{ video_url }}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+        </div> 
+        
+    </main>
+    <label class="icon-plus" for="pop-up"></label>
+    <!-- <div class="flex_item memo">
+
+    </div> -->
 {% endblock %}
