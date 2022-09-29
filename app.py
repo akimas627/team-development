@@ -83,7 +83,11 @@ def home():
             categories_json.append(categorie_dict)
         # userが保持してるvideoをすべて取得
         videos = Videos.query.filter_by(user_id=user_id).all()
-        return render_template("home.html", videos=videos, categories=categories, json=categories_json)
+        # videoの持つメモの個数を数える
+        memoNumbers = 0
+        for video in videos:
+            memoNumbers += 1
+        return render_template("home.html", videos=videos, categories=categories, json=categories_json, memoNumbers=memoNumbers)
 
     # 動画登録機能
     else:
