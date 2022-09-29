@@ -47,7 +47,7 @@
                         <div class="FlexTextarea__dummy" id="FlexTextarea__dummy" aria-hidden="true"></div>
                         <textarea name="memotext" id="memotext" placeholder="メモを書き込む">{{ now_memo.memo }}</textarea>
                     </div>
-                    <input class="registbutton" type="submit" value="保存">
+                    <input class="registbutton" type="submit" value="保存" onclick="window.onbeforeunload=null"/>
                 </form>    
             </div>
             <div class="flex_item video-group">
@@ -88,5 +88,10 @@
 
         //console.log(relativeValue.clientWidth);
 
+    </script>
+    <script type="text/javascript">
+        window.onbeforeunload = function(e) {
+            e.returnValue = "本当にページを閉じますか？";
+        }
     </script>
 {% endblock %} 
