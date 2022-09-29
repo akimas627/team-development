@@ -216,7 +216,7 @@
     word-wrap: break-word;
     overflow-wrap: break-word;
     border: 1px solid;
-    min-height: 400px;
+    min-height: 500px;
   }
 
   textarea{

@@ -60,7 +60,7 @@
                     {% for memo in memos %}
                         <div class="timestamp-button">
                             <label for="">
-                                <a href="/detail/{{ video.id }}/{{ memo.id }}">{{memo.memotitle}}</a>
+                                <a class="timestamp-bottom-st" href="/detail/{{ video.id }}/{{ memo.id }}">{{memo.memotitle}}</a>
                                 <!-- <button>{{ memo.timestamp }}</button> -->
                             </label>
                         </div>
@@ -69,7 +69,7 @@
             </div>
         </div>
 
-        <a href="/delete/{{ video.id }}/{{ now_memo.id }}">メモ削除</a>
+        <a class="timestamp-bottom-st" href="/delete/{{ video.id }}/{{ now_memo.id }}">メモ削除</a>
     {% endif %}
     <label class="icon-plus" for="pop-up"></label>
     <script>
