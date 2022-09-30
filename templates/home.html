@@ -122,15 +122,17 @@
         <script src="/static/js/home.js"></script>
 
         <script type="text/javascript">
-            const categories = {{json_categories}};
-            for(const category of categories) {
-                console.log(category);
-                $(document).ready(function () {
-                $('#link_'+ category.categorie).on('click', function () {
-                $(window).scrollTop($('#'+category.categorie).position().top);
-                });
-            });
-            }
+            //const categories = {{json}};
+            var categories = JSON.parse('{{categories_json | tojson | safe}}');
+            $(function () {
+                for(category of categories) {
+                    const target= category.categorie;    
+                    $('#link_'+target ).on('click', function () {
+                        $(window).scrollTop($('#'+target).position().top);
+                    });                                                   
+                }
+            });  
+
         </script>
 
     </body>

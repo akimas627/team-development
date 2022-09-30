@@ -109,17 +109,49 @@
 
 .video-group{
     display: block;
+    width: 50%;
 }
 .memo-group{
     display: block;
+    width: 50%;
 }
 
 /* 動画の場所や大きさの設定 */
 .video-wrap{
-    max-width: 50%;
+    max-width: 90vw;
     margin-left: auto;
     margin-right: 20px;
-    min-width: 300px;
+    min-width: 600px;
+}
+
+.video-center{
+  width: 60%;
+  display: flex;
+  margin-left: auto;
+  margin-right: 20px;
+} 
+
+
+ .timestamp-wrap ul{
+  padding-left: 80px;
+  overflow: scroll;
+  height: 50vh;
+  border: solid;
+  border-color: #c6c6c6;
+ }
+
+.timestamp-title{
+  text-align: center;
+  color:#f5f5f5;
+  margin-left: auto;
+  margin-right: auto;
+  font-size: 30px;
+  display:block;
+  padding-bottom: 30px;
+}
+
+.static-position{
+  position:fixed;
 }
 
 /* 動画を囲うdiv */
@@ -141,10 +173,74 @@
     height: 100%;
   }
 
+  .timestamp-wrap{
+    width: 35%;
+    margin-left: 20px;
+    margin-right: auto;
+    /* display: flex; */
+    min-height: 50%;
+  }
+
+  .timestamp-wrap li{
+    list-style: none;
+  }
+
+  .timestamp{
+    display:block;
+    margin:auto;
+    text-decoration: none;
+    font-size: 30px;
+    color:#c6c6c6;
+    padding-right: 10px;
+  }
+
+  .timestamp:hover{
+    color: #9d9d9d;
+  }
+
+  .FlexTextarea{
+    /* min-height: 300px;
+    width: 80%; */
+    position: relative;
+    width: 80%;
+    margin-right: 10%;
+    margin-left: 10%;
+  }
+
+  .FlexTextarea__dummy {
+    overflow: hidden;
+    visibility: hidden;
+    box-sizing: border-box;
+   /*  padding: 5px 15px; */
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    border: 1px solid;
+    min-height: 500px;
+  }
+
   textarea{
     display: inline-block;
-    resize: both;
-    min-width: 100px;
-    min-height: 300px;
-    max-width: 800px;
+    width: 100%;
+    height: 100%;
+    font-size: 1.5rem;          /* 文字サイズ */
+    color: #f5f5f5;
+    line-height: 1.2;        /* 行の高さ */
+    border-radius: 0.25rem; /* 枠線 */
+    border: 2px solid #c6c6c6;  
+    background-color: #212529;
+    padding: 10px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    resize: none;
+  }
+  
+  .textarea:focus {
+    outline: none;           /* ※ブラウザが標準で付加する線を消したいとき */
+}
+
+  .memo-group input{
+    margin-left: auto;
+    margin-right: auto;
   }

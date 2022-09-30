@@ -1,8 +1,9 @@
-/* $(document).ready(function () {
-    $('#link_hobby').on('click', function () {
-      $(window).scrollTop($('#hobby').position().top);
+  /* $(document).ready(function () {
+    $('#link_music').on('click', function () {
+      $(window).scrollTop($('#music').position().top);
     });
-}); */
+});  */
+
 
 function changeTerm() {
   let id = document.getElementById('genre').value;

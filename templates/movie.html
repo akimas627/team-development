@@ -3,38 +3,95 @@
 
 {% block head %}
     <!-- <link href="/static/css/memo.css" rel="stylesheet"> -->
+    <link href="/static/css/home.css" rel="stylesheet">
+    <script src="/static/js/memo.js"></script>
 {% endblock %}
 
 
 {% block body %}
-    
-    <a href="/memo/{{ video.id }}">メモ</a>
-    <h2>{{ video.videotitle }}</h2>
-    <p>ジャンル : {{ categorie.categorie }}</p>
+    <!-- create memo -pop-up- -->
+    <input type="checkbox" id="pop-up">
+    <div class="overlay">
+        <div class="window">
+            <label class="close" for="pop-up"></label>
+            <div class="container">
+                <div class="section_addmemo">
+                    <h1 class="title_addmemo">create new memo</h1>
+                    <form action="/memo/{{ video.id }}" method="post">
+                        <h2 class="section_addmemo">メモタイトル</h2>
+                        <div>
+                            <input class="input-style" autocomplete="off" autofocus id="memotitle" name="memotitle" placeholder="メモタイトル" type="text">
+                        </div>
+                        <div>
+                            <h2 class="section_addmemo">timestamp</h2>
+                            <input class="input-style" id="timestamp" name="timestamp" placeholder="timestamp" type="time" step="1" max="11:59:59" required>
+                        </div>
 
-    {% if now_memo %}
-    <div class="memo-contents">
-        <div class="flex_item video-group">
-            <div class="video-wrap">
-                <div class="video">
-                    <iframe width="560" height="315" src="{{ video_url }}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                        <input type="submit" name="regist" value="登録">
+                    </form>
                 </div>
             </div>
-            {% for memo in memos %}
-                <label for="">
-                    <a href="/detail/{{ video.id }}/{{ memo.id }}">{{memo.memotitle}}</a>
-                    <!-- <button>{{ memo.timestamp }}</button> -->
-                </label>
-            {% endfor %}
         </div>
-        <div class="flex_item memo-group">
-            <form action="/detail/{{ video.id }}/{{ now_memo.id }}" method="post">
-                <textarea name="memotext" id="memotext">{{ now_memo.memo }}</textarea>
-                <input class="registbutton" type="submit" value="保存">
-            </form>    
-        </div>
+    
     </div>
 
-        <a href="/delete/{{ video.id }}/{{ now_memo.id }}">メモ削除</a>
+    <!-- <a href="/memo/{{ video.id }}">メモ</a> -->
+    <h2>{{ video.videotitle }}</h2>
+    <p>メモタイトル : {{ now_memo.memotitle }}</p>
+    {% if now_memo %}
+        <div class="memo-contents">
+            
+            <div class="flex_item memo-group">
+                <form action="/detail/{{ video.id }}/{{ now_memo.id }}" method="post">
+                    <div class="FlexTextarea" id="FlexTextarea">
+                        <div class="FlexTextarea__dummy" id="FlexTextarea__dummy" aria-hidden="true"></div>
+                        <textarea name="memotext" id="memotext" placeholder="メモを書き込む">{{ now_memo.memo }}</textarea>
+                    </div>
+                    <input class="registbutton" type="submit" value="保存" onclick="window.onbeforeunload=null"/>
+                </form>    
+            </div>
+            <div class="flex_item video-group">
+                <div class="static-position">
+                    <div class="video-wrap">
+                        <div class="video">
+                            <iframe width="560" height="315" src="{{ video_url }}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                        </div>
+                    </div>
+                    {% for memo in memos %}
+                        <div class="timestamp-button">
+                            <label for="">
+                                <a class="timestamp-bottom-st" href="/detail/{{ video.id }}/{{ memo.id }}">{{memo.memotitle}}</a>
+                                <!-- <button>{{ memo.timestamp }}</button> -->
+                            </label>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+        <a class="timestamp-bottom-st" href="/delete/{{ video.id }}/{{ now_memo.id }}">メモ削除</a>
     {% endif %}
+    <label class="icon-plus" for="pop-up"></label>
+    <script>
+        function flexTextarea(el) {
+            const dummy = el.querySelector('#FlexTextarea__dummy')
+            el.querySelector('#memotext').addEventListener('input', e => {
+              dummy.textContent = e.target.value + '\u200b'
+            })
+          }
+          
+          document.querySelectorAll('.FlexTextarea').forEach(flexTextarea)
+           
+        //memotext();
+        //var relativeValue = document.getElementById("memotext"); 
+        //var slaveValue = document.getElementById("video-wrap"); 
+
+        //console.log(relativeValue.clientWidth);
+
+    </script>
+    <script type="text/javascript">
+        window.onbeforeunload = function(e) {
+            e.returnValue = "本当にページを閉じますか？";
+        }
+    </script>
 {% endblock %} 

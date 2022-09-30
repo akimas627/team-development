@@ -1,7 +1,7 @@
 import os
 import datetime
 import json
-from flask import Flask, render_template, redirect, request, flash, session, url_for
+from flask import Flask, render_template, redirect, request, flash, session, url_for, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import UserMixin, LoginManager, login_user, logout_user, login_required
 from werkzeug.security import check_password_hash, generate_password_hash
@@ -95,8 +95,6 @@ def home():
             if video.id not in updatetimes:
                 updatetimes[video.id] = None
                 memos_count[video.id] = 0
-        print(updatetimes)
-        print(memos_count)
         return render_template("home.html", videos=videos, categories=categories, categories_json=categories_json, updatetimes=updatetimes, memos_count=memos_count)
 
     # 動画登録機能

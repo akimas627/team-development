@@ -229,7 +229,8 @@
   .icon-plus {
     width: 80px;
     height: 80px;
-    position: relative;
+    /* position: relative; */
+    position: absolute;
     background-color: #737373cd;
     position: fixed;
     border-radius: 50%;
