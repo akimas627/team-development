@@ -122,7 +122,7 @@
 
         <script type="text/javascript">
             //const categories = {{json}};
-            var categories = JSON.parse('{{json | tojson | safe}}');
+            var categories = JSON.parse('{{categories_json | tojson | safe}}');
             $(function () {
                 for(category of categories) {
                     const target= category.categorie;    
