@@ -4,7 +4,6 @@
 {% block head %}
     <!-- <link href="/static/css/memo.css" rel="stylesheet"> -->
     <link href="/static/css/home.css" rel="stylesheet">
-    <script src="/static/js/memo.js"></script>
 {% endblock %}
 
 
@@ -73,15 +72,30 @@
         <a class="timestamp-bottom-st" href="/delete/{{ video.id }}/{{ now_memo.id }}">メモ削除</a>
     {% endif %}
     <label class="icon-plus" for="pop-up"></label>
+
+    <script
+        src="https://code.jquery.com/jquery-3.4.1.min.js"
+        integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+        crossorigin="anonymous"></script>
     <script>
-        function flexTextarea(el) {
-            const dummy = el.querySelector('#FlexTextarea__dummy')
-            el.querySelector('#memotext').addEventListener('input', e => {
-              dummy.textContent = e.target.value + '\u200b'
-            })
-          }
-          
-          document.querySelectorAll('.FlexTextarea').forEach(flexTextarea)
+        
+
+        $("#ta").on("input",function(evt){
+            if(evt.target.scrollHeight > evt.target.offsetHeight){   
+                $(evt.target).height(evt.target.scrollHeight);
+            }else{          
+                var lineHeight = Number($(evt.target).css("lineHeight").split("px")[0]);
+                while (true){
+                    $(evt.target).height($(evt.target).height() - lineHeight); 
+                    if(evt.target.scrollHeight > evt.target.offsetHeight){
+                        $(evt.target).height(evt.target.scrollHeight);
+                        break;
+                    }
+                }
+            }
+        });
+
+        
            
         //memotext();
         //var relativeValue = document.getElementById("memotext"); 
