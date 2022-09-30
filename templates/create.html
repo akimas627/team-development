@@ -1,34 +1,49 @@
 {% extends "base.html" %}
+{% block title %}
+    Create
+{% endblock %}
 {% block head %}
     <link href="/static/css/home.css" rel="stylesheet">
 {% endblock %}
 {% block body %}
-
-<div class="container">
-    <div class="section_addmemo">
-        <h1 class="title_addmemo">create</h1>
-        <form action="/" method="post">
-            <h2 class="section_addmemo">メモタイトル</h2>
-            <div>
-                <input class="input-style" autocomplete="off" autofocus id="videotitle" name="videotitle" placeholder="メモタイトル" type="text">
-            </div>
-            <div>
-                <h2 class="section_addmemo">url</h2>
-                <input class="input-style" id="url" name="url" placeholder="url" type="text">
-            </div>
-            <div>
-                <h2 class="section_addmemo">ジャンル</h2>
-                <datalist id="janrecategorie">
-                    {% for categorie in categories %}
-                        <option value="{{ categorie.categorie }}"id="categorie" name="categorie">
-                    {% endfor %}
-                </datalist>
-                <input autocomplete="off" class="input-style" id="categorie" list="janrecategorie" name="categorie" placeholder="ジャンル" type="text">
-            </div>
-            <input type="submit" name="regist" value="登録">
-        </form>
+    <div class="top">
+        <a href="{{ url_for('home') }}"><img src="/static/images/logo.png" alt="" class="logo"></a>
     </div>
-</div>
+
+    <div class="container">
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    {% for message in messages %}
+                        {{ message }}
+                    {% endfor %}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endif %}
+        {% endwith %}   
+        <div class="section_addmemo">
+            <form action="/" method="post">
+                <h2 class="section_addmemo">メモタイトル</h2>
+                <div>
+                    <input class="input-style" autocomplete="off" autofocus id="videotitle" name="videotitle" placeholder="メモタイトル" type="text" required>
+                </div>
+                <div>
+                    <h2 class="section_addmemo">url</h2>
+                    <input class="input-style" id="url" name="url" placeholder="url" type="text" required>
+                </div>
+                <div>
+                    <h2 class="section_addmemo">ジャンル</h2>
+                    <datalist id="janrecategorie">
+                        {% for categorie in categories %}
+                            <option value="{{ categorie.categorie }}"id="categorie" name="categorie">
+                        {% endfor %}
+                    </datalist>
+                    <input autocomplete="off" class="input-style" id="categorie" list="janrecategorie" name="categorie" placeholder="ジャンル" type="text" required>
+                </div>
+                <input class="btn btn-primary" type="submit" name="regist" value="登録">
+            </form>
+        </div>
+    </div>
 
 
 {% endblock %}

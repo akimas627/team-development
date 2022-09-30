@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% block title %}
-    Edit
+    メモ変更
 {% endblock %}
 {% block head %}
     <link href="/static/css/home.css" rel="stylesheet">
@@ -9,7 +9,6 @@
     <div class="top">
         <a href="{{ url_for('home') }}"><img src="/static/images/logo.png" alt="" class="logo"></a>
     </div>
-
     <div class="container">
         {% with messages = get_flashed_messages() %}
             {% if messages %}
@@ -20,23 +19,19 @@
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
             {% endif %}
-        {% endwith %}   
+        {% endwith %}
         <div class="section_addmemo">
-            <form action="/edit/{{ video.id }}" method="post">
-                <h2 class="section_addmemo">メモタイトル</h2>
+            <form action="/memoedit/{{ memo.id }}" method="post">
                 <div>
-                    <input class="input-style" autocomplete="off" autofocus id="videotitle" name="videotitle" placeholder="メモタイトル" type="text" required>
+                    <h2>メモタイトル</h2>
+                    <input autocomplete="off" autofocus id="memotitle" name="memotitle" type="text" value="{{ memo.memotitle }}" required>
                 </div>
                 <div>
-                    <h2 class="section_addmemo">ジャンル</h2>
-                    <datalist id="janrecategorie">
-                        {% for categorie in categories %}
-                            <option value="{{ categorie.categorie }}"id="categorie" name="categorie">
-                        {% endfor %}
-                    </datalist>
-                    <input autocomplete="off" class="input-style" id="categorie" list="janrecategorie" name="categorie" placeholder="ジャンル" type="text" required>
+                    <h2>タイムスタンプ</h2>
+                    <input id="timestamp" name="timestamp" type="time" step="1" max="11:59:59" required value="{{ memo.timestamp }}" required>
                 </div>
-                <input class="btn btn-primary" type="submit" name="regist" value="変更">
+                <input class="btn btn-primary" type="submit" name="edit" value="変更"></input>
             </form>
         </div>
+    </div>
 {% endblock %}

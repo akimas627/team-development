@@ -4,39 +4,48 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, user-scalable=yes">
-        <title>youtube memo {% block title %}{% endblock %}</title>
+        <title>Register</title>
         <meta name="description" content="youtubeとメモをリンク。新たな学習体験。">
         <meta name="application-name" content="Youtube memo">
+        <link rel="icon" href="/static/images/favicon.ico">
+        <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500&display=swap" rel="stylesheet">
         <link href="/static/css/styles.css" rel="stylesheet">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
         <!-- CSS only -->
     </head>
 
     <body>
-        <div class="site_entire">
-            <header>
-                <h1 class="header">Youtube memo</h1>
-            </header>
+        <div class="top">
+            <a class="registbutton" href="/login">ログイン</a>
+            <img src="/static/images/logo.png" alt="" class="logo">
         </div>
-        {% with message = get_flashed_messages() %}
-            {% if message %}
-                {{ message }}
-            {% endif %}
-        {% endwith %}
         <div class="container">
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        {% for message in messages %}
+                            {{ message }}
+                        {% endfor %}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                {% endif %}
+            {% endwith %}   
             <div class="section">
-                <h1>register</h1>
                 <form action="/register" method="post">
                     <h2>mail address</h2>
                     <div class="mailaddress section">
-                        <input autocomplete="off" autofocus id="email" name="email" placeholder="メールアドレス" type="email">
+                        <input autocomplete="off" autofocus id="email" name="email" placeholder="メールアドレス" type="email" required>
                     </div>
                     <div class="password section">
                         <h2>password</h2>
-                        <input id="password" name="mainpassword" placeholder="パスワード" type="password">
+                        <input id="password" name="mainpassword" placeholder="パスワード" type="password" required>
                         <h2>password</h2>
-                        <input id="password" name="subpassword" placeholder="パスワード再入力" type="password">
+                        <input id="password" name="subpassword" placeholder="パスワード再入力" type="password" required>
                     </div>
-                    <input type="submit" name="regist" value="登録"></input>
+                    <div class="container">
+                        <input class="btn btn-primary" type="submit" name="regist" value="新規登録">
+                    </div>
                 </form>
             </div>
         </div>

@@ -1,5 +1,7 @@
 {% extends "base.html" %}
-
+{% block title %}
+    {{ now_memo.memotitle }}
+{% endblock %}
 
 {% block head %}
     <!-- <link href="/static/css/memo.css" rel="stylesheet"> -->
@@ -15,7 +17,7 @@
             <label class="close" for="pop-up"></label>
             <div class="container">
                 <div class="section_addmemo">
-                    <h1 class="title_addmemo">create new memo</h1>
+                    <h1 class="title_addmemo">new memo</h1>
                     <form action="/memo/{{ video.id }}" method="post">
                         <h2 class="section_addmemo">メモタイトル</h2>
                         <div>
@@ -25,36 +27,41 @@
                             <h2 class="section_addmemo">timestamp</h2>
                             <input class="input-style" id="timestamp" name="timestamp" placeholder="timestamp" type="time" step="1" max="11:59:59" required>
                         </div>
-
-                        <input type="submit" name="regist" value="登録">
+                        <input class="btn btn-primary" type="submit" name="regist" value="登録">
                     </form>
                 </div>
             </div>
         </div>
-    
     </div>
 
     <!-- <a href="/memo/{{ video.id }}">メモ</a> -->
-    <h2>{{ video.videotitle }}</h2>
+    <div class="top">
+        <a href="{{ url_for('home') }}"><img src="/static/images/logo.png" alt="" class="logo"></a>
+    </div>
+    <h2>タイトル：{{ video.videotitle }}</h2>
     <p>メモタイトル : {{ now_memo.memotitle }}</p>
+    <div>
+        <a class="timestamp-bottom-st btn btn-info" href="/memoedit/{{ now_memo.id }}" role="button">メモ変更</a>
+        <a class="timestamp-bottom-st btn btn-danger" href="/delete/{{ video.id }}/{{ now_memo.id }}" role="button">メモ削除</a>
+    </div>
     {% if now_memo %}
     <div class="memo-contents">
         <div class="flex_item video-group">
-            <div class="static-position">
+            <!-- <div class="static-position"> -->
                 <div class="video-wrap">
                     <div class="video">
-                        <iframe width="560" height="315" src="{{ video_url }}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                        <iframe width="800" height="450" src="{{ video_url }}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                     </div>
                 </div>
-                {% for memo in memos %}
-                    <div class="timestamp-button">
-                        <label for="">
-                            <a class="timestamp-bottom-st" href="/detail/{{ video.id }}/{{ memo.id }}">{{memo.memotitle}}</a>
-                            <!-- <button>{{ memo.timestamp }}</button> -->
-                        </label>
-                    </div>
-                {% endfor %}
-            </div>
+                <div class="d-flex">
+                    {% for memo in memos %}
+                        <div class="timestamp-button">
+                            <a class="timestamp-bottom-st btn btn btn-outline-primary btn-sm" href="/detail/{{ video.id }}/{{ memo.id }}" role="button">{{memo.memotitle}}</a>
+                        </div>
+                    {% endfor %}
+                </div>
+
+            <!-- </div> -->
         </div>
         
         <div class="flex_item memo-group">
@@ -68,8 +75,6 @@
             </form>    
             </div>
         </div>
-
-        <a class="timestamp-bottom-st" href="/delete/{{ video.id }}/{{ now_memo.id }}">メモ削除</a>
     {% endif %}
     <label class="icon-plus" for="pop-up"></label>
 

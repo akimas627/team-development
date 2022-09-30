@@ -83,8 +83,8 @@ def home():
         memos = db.session.query(Memos.video_id, Memos.updatetime).order_by(Memos.updatetime.desc()).all()
         # メモが存在する場合はvideo_idをキーとして最新順に保存
         updatetimes = {}
-        memos_count = {}
         # memos_countでメモの数を追跡
+        memos_count = {}
         for memo in memos:
             if memo.video_id not in updatetimes:
                 updatetimes[memo.video_id] = memo.updatetime
@@ -107,13 +107,13 @@ def home():
         # エラー処理
         if not videotitle:
             flash("メモタイトルを入力してください")
-            return render_template("home.html")
+            return render_template("create.html")
         if not url or len(url) != 28:
             flash("正しいurlを入力してください")
-            return render_template("home.html")
+            return render_template("create.html")
         if not categorie:
-            flash("カテゴリーを入力してください")
-            return render_template("home.html")
+            flash("ジャンルを入力してください")
+            return render_template("create.html")
 
         # urlからyoutubeのidを取得
         url = url[17:28]
@@ -341,9 +341,17 @@ def memoedit(memo_id):
     else:
         memotitle = request.form.get("memotitle")
         timestamp = request.form.get("timestamp")
-        if len(timestamp) != 8:
+        if not memotitle:
+            flash("メモタイトルを入力してください。")
             return render_template("memoedit.html", memo=memo)
-
+        if len(timestamp) != 8:
+            flash("タイムスタンプを入力してください。")
+            return render_template("memoedit.html", memo=memo)
+        
+        memo.memotitle = memotitle
+        memo.timestamp = timestamp
+        db.session.commit()
+        return redirect(url_for("memodetail", id=memo.video_id, memo_id=memo.id))
 
 # メモのタイムスタンプの登録機能
 @app.route("/memo/<int:id>", methods=["GET", "POST"])
