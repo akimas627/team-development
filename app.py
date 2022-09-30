@@ -40,7 +40,7 @@ class Videos(db.Model):
 
 class Categories(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    categorie = db.Column(db.String, unique=True, nullable=False)
+    categorie = db.Column(db.String, nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
     user = db.relationship("Users", back_populates="categories")
     video = db.relationship("Videos", back_populates="categorie")
