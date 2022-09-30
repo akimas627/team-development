@@ -14,4 +14,4 @@ def categories_change_json(categories):
         categorie_dict["id"] = categorie.id
         categorie_dict["categorie"] = categorie.categorie
         json.append(categorie_dict)
-        return json
+    return json
