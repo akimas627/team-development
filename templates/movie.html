@@ -6,7 +6,6 @@
 {% block head %}
     <!-- <link href="/static/css/memo.css" rel="stylesheet"> -->
     <link href="/static/css/home.css" rel="stylesheet">
-    <link href="https://use.fontawesome.com/releases/v6.2.0/css/all.css" rel="stylesheet">
 {% endblock %}
 
 
@@ -72,7 +71,7 @@
                     </div>
                     <textarea name="memotext" id="memotext" placeholder="メモを書き込む">{{ now_memo.memo }}</textarea>
                 </div>
-                <input class="submit-button" type="submit" id="submit" value="保存" onclick="window.onbeforeunload=null"/>
+                <input class="registbutton" type="submit" value="保存" onclick="window.onbeforeunload=null"/>
             </form>    
             </div>
         </div>
@@ -86,10 +85,9 @@
     <script>
         
 
-        $("#memotext").on("input",function(evt){
+        $("#ta").on("input",function(evt){
             if(evt.target.scrollHeight > evt.target.offsetHeight){   
                 $(evt.target).height(evt.target.scrollHeight);
-                
             }else{          
                 var lineHeight = Number($(evt.target).css("lineHeight").split("px")[0]);
                 while (true){
@@ -101,6 +99,8 @@
                 }
             }
         });
+
+        
         //memotext();
         //var relativeValue = document.getElementById("memotext"); 
         //var slaveValue = document.getElementById("video-wrap"); 
