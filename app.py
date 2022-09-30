@@ -74,23 +74,24 @@ def home():
     # マイページ
     if request.method == "GET":
         # userが保持してるカテゴリをすべて取得
-        categories = Categories.query.filter_by(user_id=user_id).all()
+        categories = db.session.query(Categories.id, Categories.categorie).filter_by(user_id=user_id).all()
         # カテゴリーをjsonに適した形に変換
         categories_json = categories_change_json(categories)
         # userが保持してるvideoをすべて取得
-        videos = Videos.query.filter_by(user_id=user_id).all()
+        videos = db.session.query(Videos.id, Videos.videotitle, Videos.url, Videos.categorie_id).filter_by(user_id=user_id).all()
         # memoをupdatetime順に並べ替え
         memos = db.session.query(Memos.video_id, Memos.updatetime).order_by(Memos.updatetime.desc()).all()
-        # メモが存在する場合はvideo_idをキーとして最新順に保存 memoの数を数える
+        # メモが存在する場合はvideo_idをキーとして最新順に保存
         updatetimes = {}
         memos_count = {}
+        # memos_countでメモの数を追跡
         for memo in memos:
             if memo.video_id not in updatetimes:
                 updatetimes[memo.video_id] = memo.updatetime
                 memos_count[memo.video_id] = 1
             else:
                 memos_count[memo.video_id] += 1
-        # メモが存在しない場合はupdatetimeはNoneとして保存
+        # メモが存在しない場合はupdatetimeはNoneとして保存 memos_countは0にする
         for video in videos:
             if video.id not in updatetimes:
                 updatetimes[video.id] = None
@@ -124,18 +125,20 @@ def home():
             db.session.commit()
 
         # 新たなvideoを作成しdbに追加
-        categorie = Categories.query.filter_by(categorie=categorie, user_id=user_id).first()
+        # dbから該当するCategoriesの主キーを取得
+        categorie = db.session.query(Categories.id).filter_by(categorie=categorie, user_id=user_id).first()
         new_video = Videos(videotitle=videotitle, url=url, user_id=user_id, categorie_id=categorie.id)
         db.session.add(new_video)
         db.session.commit()
         return redirect(url_for("home"))
 
+# メニューからの動画登録用のルーティング
 @app.route("/create")
+@login_required
 def create():
     user_id = session["user_id"]
-    categories = Categories.query.filter_by(user_id=user_id).all()
+    categories = db.session.query(Categories.categorie).filter_by(user_id=user_id).all()
     return render_template("create.html", categories=categories)
-
 
 # 新規登録
 @app.route("/register", methods=["GET", "POST"])
@@ -197,7 +200,7 @@ def login():
 
         # データベースからuserのデータを取得
         user = Users.query.filter_by(email=email).first()
-        
+
         # user が存在しないまたは保存されたhashとpasswordのhashが違う場合
         if not user or not check_password_hash(user.hash, password):
             flash("メールアドレスもしくはパスワードが間違っています。")
@@ -227,7 +230,7 @@ def detail(id):
     # 動画のカテゴリを取得
     categorie = Categories.query.get(video.categorie_id)
     # 動画と紐づくメモの取得
-    memos = Memos.query.filter_by(user_id=user_id, video_id=video.id).all()
+    memos = db.session.query(Memos.id, Memos.memotitle).filter_by(user_id=user_id, video_id=video.id).all()
     # メモが存在する場合はメモの情報を渡す
     if memos:
         return render_template("detail.html", video=video, categorie=categorie, video_url=video_url, memos=memos)
