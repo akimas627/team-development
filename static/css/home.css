@@ -51,7 +51,7 @@
     padding-left: 10px;
     overflow: scroll;
     height: 80vh;
-    display: flex; 
+    /* display: flex;  */
     flex-wrap: wrap;
 }
 
