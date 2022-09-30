@@ -4,12 +4,32 @@
     <head>
         <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500&display=swap" rel="stylesheet">
         <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/Modaal/0.4.4/css/modaal.min.css">
+        <link rel="icon" href="/static/images/favicon.ico">
         <link href="/static/css/loginstyles.css" rel="stylesheet">
         <link href="/static/css/home.css" rel="stylesheet">
+        <link href="/static/css/memo.css" rel="stylesheet">
         <title>Home</title>
     </head>
 
     <body>
+        <div class="hamburger-menu">
+            <input type="checkbox" id="menu-btn-check">
+            <label for="menu-btn-check" class="menu-btn"><span></span></label>
+            <!--ここからメニュー-->
+            <div class="menu-content">
+                <ul>
+                    <li>
+                        <a href="/">トップページ</a>
+                        
+                    </li>
+                    <li>
+                        <a href="/create">動画登録</a>
+                    </li>
+                    <li>
+                        <a href="/logout">ログアウト</a>
+                    </li>
+                </ul>
+            </div>
         <!-- add memo button-->
         <!-- <a href="#add_memo" class="add_memo"><div class="icon-plus"></div></a> -->
         <label class="icon-plus" for="pop-up"></label>
@@ -49,7 +69,6 @@
         <!-- home part -->
         <div class="home">
             <div class="top_home">
-                <a class="registbutton" href="/logout">Logout</a>
                 <h1>Youtube memo</h1>
             </div>
             <main class="main">
@@ -75,9 +94,9 @@
                                     <h1 class="topic_title" id="{{ categorie.categorie }}">{{ categorie.categorie }}</h1>
                                 </div>
                                 <div class="memo_card_group">
-                                    
+                                    {% for updatetime in updatetimes %}
                                         {% for video in videos %}
-                                            {% if categorie.id == video.categorie_id %}
+                                            {% if categorie.id == video.categorie_id and updatetime == video.id %}
                                                 <div class="memo_card">
                                                     <a href="detail/{{ video.id }}"><img class="card__imgframe" src="https://img.youtube.com/vi/{{ video.url }}/maxresdefault.jpg"></a>
                                                     <a href="detail/{{ video.id }}">
@@ -86,10 +105,10 @@
                                                                 {{ video.videotitle | truncate(25, True) }}
                                                             </div>
                                                             <div class="card__overviewtext">
-                                                                {% if not video.memos %}
-                                                                    メモはまだありません．．．
+                                                                {% if memos_count[video.id] == 0 %}
+                                                                    メモはまだありません
                                                                 {% else %}
-                                                                    メモは{{ memoNumbers }}個です
+                                                                    メモは{{ memos_count[video.id] }}個です
                                                                 {% endif %}
                                                             </div>
                                                         </div>
@@ -97,6 +116,7 @@
                                                 </div>
                                             {% endif %}
                                         {% endfor %}
+                                    {% endfor %}
                                 </div>
                                 
                             </div>

@@ -79,15 +79,17 @@ def home():
         for categorie in categories:
             categorie_dict = {}
             categorie_dict["id"] = categorie.id
+
             categorie_dict["categorie"] = categorie.categorie
             categories_json.append(categorie_dict)
         # userが保持してるvideoをすべて取得
         videos = Videos.query.filter_by(user_id=user_id).all()
         # videoの持つメモの個数を数える
-        memoNumbers = 0
         for video in videos:
-            memoNumbers += 1
-        return render_template("home.html", videos=videos, categories=categories, categories_json=categories_json, memoNumbers=memoNumbers)
+            if video.id not in updatetimes:
+                updatetimes[video.id] = None
+                memos_count[video.id] = 0
+        return render_template("home.html", videos=videos, categories=categories, categories_json=categories_json, memos_count=memos_count)
 
     # 動画登録機能
     else:
