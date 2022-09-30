@@ -53,10 +53,10 @@ body{
     padding-top: 0.5rem;
 }
 
-.section:hover {
+/* .section:hover {
     background-color: #424242;
     transition: color 2s ease-in-out, background-color 0.15s ease-in-out;
-}
+} */
 
 h1 {
     font-family: 'Montserrat', sans-serif;
@@ -120,13 +120,12 @@ input[type="email"]:hover {
 }
 
 .timestamp-bottom-st{
-    display:block;
     margin:auto;
     text-decoration: none;
     color:#c6c6c6;
     padding-right: 10px;
-  }
+}
 
-  .timestamp-bottom-st:hover{
+.timestamp-bottom-st:hover{
     color: #9d9d9d;
-  }
+}
