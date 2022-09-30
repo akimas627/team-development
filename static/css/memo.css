@@ -129,14 +129,6 @@
     width: 50%;
 }
 
-.flexitem.video-group{
-  width:50%;
-}
-
-.flexitem.memo-group{
-  width:50%;
-}
-
 /* 動画の場所や大きさの設定 */
 .video-wrap{
     max-width: 90vw;
