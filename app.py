@@ -87,7 +87,7 @@ def home():
         memoNumbers = 0
         for video in videos:
             memoNumbers += 1
-        return render_template("home.html", videos=videos, categories=categories, json=categories_json, memoNumbers=memoNumbers)
+        return render_template("home.html", videos=videos, categories=categories, categories_json=categories_json, memoNumbers=memoNumbers)
 
     # 動画登録機能
     else:
