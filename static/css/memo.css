@@ -1,262 +1,270 @@
 .button{
-    display: inline-block;
-    padding: 15px 0;
-    margin-top: 30px;
-    text-align: center;
-    background-color: #f5f5f5;
-    color: #212529;
-    text-decoration:none;
-    width: 100px;
-    margin-left: auto;
-    border-radius: 100vh;
+  display: inline-block;
+  padding: 15px 0;
+  margin-top: 30px;
+  text-align: center;
+  background-color: #f5f5f5;
+  color: #212529;
+  text-decoration:none;
+  width: 100px;
+  margin-left: auto;
+  border-radius: 100vh;
 }
 
 .video-title{
-    padding-left: 50px;
-    padding-top: 20px;
-    padding-bottom: 20px;
+  padding-left: 50px;
+  padding-top: 20px;
+  padding-bottom: 20px;
 }
 
 .genre-title{
-    font-size: 20px;
-    padding-left: 50px;
-    padding-bottom: 20px;
+  font-size: 20px;
+  padding-left: 50px;
+  padding-bottom: 20px;
 }
 
 /*ハンバーガーメニュー*/
 .menu-btn {
-  position: fixed;
-  top: 10px;
-  right: 10px;
-  display: flex;
-  height: 60px;
-  width: 60px;
-  justify-content: center;
-  align-items: center;
-  z-index: 90;
-  background-color: #212529;
+position: fixed;
+top: 10px;
+right: 10px;
+display: flex;
+height: 60px;
+width: 60px;
+justify-content: center;
+align-items: center;
+z-index: 90;
+background-color: #212529;
 }
 .menu-btn span,
 .menu-btn span:before,
 .menu-btn span:after {
-  content: '';
-  display: block;
-  height: 3px;
-  width: 25px;
-  border-radius: 3px;
-  background-color: #ffffff;
-  position: absolute;
+content: '';
+display: block;
+height: 3px;
+width: 25px;
+border-radius: 3px;
+background-color: #ffffff;
+position: absolute;
 }
 .menu-btn span:before {
-  bottom: 8px;
+bottom: 8px;
 }
 .menu-btn span:after {
-  top: 8px;
+top: 8px;
 }
 
 #menu-btn-check:checked ~ .menu-btn span {
-  background-color: rgba(255, 255, 255, 0);/*メニューオープン時は真ん中の線を透明にする*/
+background-color: rgba(255, 255, 255, 0);/*メニューオープン時は真ん中の線を透明にする*/
 }
 #menu-btn-check:checked ~ .menu-btn span::before {
-  bottom: 0;
-  transform: rotate(45deg);
+bottom: 0;
+transform: rotate(45deg);
 }
 #menu-btn-check:checked ~ .menu-btn span::after {
-  top: 0;
-  transform: rotate(-45deg);
+top: 0;
+transform: rotate(-45deg);
 }
 
 #menu-btn-check {
-  display: none;
+display: none;
 }
 
 .menu-content {
-  width: 50%;
-  height: 100%;
-  position: fixed;
-  top: 0;
-  left: 100%;/*leftの値を変更してメニューを画面外へ*/
-  z-index: 80;
-  background-color: #212529;
-  transition: all 0.5s;/*アニメーション設定*/
+width: 50%;
+height: 100%;
+position: fixed;
+top: 0;
+left: 100%;/*leftの値を変更してメニューを画面外へ*/
+z-index: 80;
+background-color: #212529;
+transition: all 0.5s;/*アニメーション設定*/
 }
 .menu-content ul {
-  padding: 70px 10px 0;
+padding: 70px 10px 0;
 }
 .menu-content ul li {
-  border-bottom: solid 1px #ffffff;
-  list-style: none;
+border-bottom: solid 1px #ffffff;
+list-style: none;
 }
 .menu-content ul li a {
-  display: block;
-  width: 100%;
-  font-size: 15px;
-  box-sizing: border-box;
-  color:#ffffff;
-  text-decoration: none;
-  padding: 9px 15px 10px 0;
-  position: relative;
+display: block;
+width: 100%;
+font-size: 15px;
+box-sizing: border-box;
+color:#ffffff;
+text-decoration: none;
+padding: 9px 15px 10px 0;
+position: relative;
 }
 .menu-content ul li a::before {
-  content: "";
-  width: 7px;
-  height: 7px;
-  border-top: solid 2px #ffffff;
-  border-right: solid 2px #ffffff;
-  transform: rotate(45deg);
-  position: absolute;
-  right: 11px;
-  top: 16px;
+content: "";
+width: 7px;
+height: 7px;
+border-top: solid 2px #ffffff;
+border-right: solid 2px #ffffff;
+transform: rotate(45deg);
+position: absolute;
+right: 11px;
+top: 16px;
 }
 
 #menu-btn-check:checked ~ .menu-content {
-  left: 70%;/*メニューを画面内へ*/
+left: 70%;/*メニューを画面内へ*/
 }
 
 /*end ハンバーガーメニュー*/
 
 /* 動画を横に並べる処理 */
 .memo-contents{
-    display: flex;
+  display: flex;
 }
 
 .video-group{
-    display: block;
-    width: 50%;
+  display: block;
+  width: 50%;
 }
 .memo-group{
-    display: block;
-    width: 50%;
+  display: block;
+  width: 50%;
+}
+
+.flexitem.video-group{
+width:50%;
+}
+
+.flexitem.memo-group{
+width:50%;
 }
 
 /* 動画の場所や大きさの設定 */
 .video-wrap{
-    max-width: 90vw;
-    margin-left: auto;
-    margin-right: 20px;
-    min-width: 600px;
+  max-width: 90vw;
+  margin-left: auto;
+  margin-right: 20px;
+  min-width: 600px;
 }
 
 .video-center{
-  width: 60%;
-  display: flex;
-  margin-left: auto;
-  margin-right: 20px;
+width: 60%;
+display: flex;
+margin-left: auto;
+margin-right: 20px;
 } 
 
 
- .timestamp-wrap ul{
-  padding-left: 80px;
-  overflow: scroll;
-  height: 50vh;
-  border: solid;
-  border-color: #c6c6c6;
- }
+.timestamp-wrap ul{
+padding-left: 80px;
+overflow: scroll;
+height: 50vh;
+border: solid;
+border-color: #c6c6c6;
+}
 
 .timestamp-title{
-  text-align: center;
-  color:#f5f5f5;
-  margin-left: auto;
-  margin-right: auto;
-  font-size: 30px;
-  display:block;
-  padding-bottom: 30px;
+text-align: center;
+color:#f5f5f5;
+margin-left: auto;
+margin-right: auto;
+font-size: 30px;
+display:block;
+padding-bottom: 30px;
 }
 
 /* 動画を固定させる */
 .static-position{
-  position:fixed;
+position:fixed;
 }
 
 /* 動画を囲うdiv */
 .video {
-    position: relative;
-    top:0;
-    right: 0;
-    width:100%; /* 横幅は100%で固定 */
-    height:0; /* 高さは0にしておく(padding-topで高さを指定するため) */
-    padding-top: 56.25%; 
-  }
-  
-  /* YouTube埋め込み用のiframe */
-  .video iframe {
-    position: absolute;
-    top: 0;
-    right: 0;
-    width: 100%;
-    height: 100%;
-  }
-
-  .timestamp-wrap{
-    width: 35%;
-    margin-left: 20px;
-    margin-right: auto;
-    /* display: flex; */
-    min-height: 50%;
-  }
-
-  .timestamp-wrap li{
-    list-style: none;
-  }
-
-  .timestamp{
-    display:block;
-    margin:auto;
-    text-decoration: none;
-    font-size: 30px;
-    color:#c6c6c6;
-    padding-right: 10px;
-  }
-
-  .timestamp:hover{
-    color: #9d9d9d;
-  }
-
-  /* メモ用のテキストエリアの設定 */
-  .FlexTextarea{
-    /* min-height: 300px;
-    width: 80%; */
-    position: relative;
-    width: 80%;
-    margin-right: 10%;
-    margin-left: 10%;
-  }
-
-  .FlexTextarea__dummy {
-    overflow: hidden;
-    visibility: hidden;
-    box-sizing: border-box;
-   /*  padding: 5px 15px; */
-    white-space: pre-wrap;
-    word-wrap: break-word;
-    overflow-wrap: break-word;
-    border: 1px solid;
-    min-height: 500px;
-    width: 100%;
-  }
-
-  textarea{
-    display: inline-block;
-    width: 100%;
-    height: 100%;
-    font-size: 1.5rem;          /* 文字サイズ */
-    color: #f5f5f5;
-    line-height: 1.2;        /* 行の高さ */
-    border-radius: 0.25rem; /* 枠線 */
-    border: 2px solid #c6c6c6;  
-    background-color: #212529;
-    padding: 10px;
-    position: absolute;
-    top: 0;
-    left: 0;
-    resize: none;
-  }
-  
-  .textarea:focus {
-    outline: none;           /* ※ブラウザが標準で付加する線を消したいとき */
+  position: relative;
+  top:0;
+  right: 0;
+  width:100%; /* 横幅は100%で固定 */
+  height:0; /* 高さは0にしておく(padding-topで高さを指定するため) */
+  padding-top: 56.25%; 
 }
 
-  .memo-group input{
-    margin-left: auto;
-    margin-right: auto;
-  }
+/* YouTube埋め込み用のiframe */
+.video iframe {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.timestamp-wrap{
+  width: 35%;
+  margin-left: 20px;
+  margin-right: auto;
+  /* display: flex; */
+  min-height: 50%;
+}
+
+.timestamp-wrap li{
+  list-style: none;
+}
+
+.timestamp{
+  display:block;
+  margin:auto;
+  text-decoration: none;
+  font-size: 30px;
+  color:#c6c6c6;
+  padding-right: 10px;
+}
+
+.timestamp:hover{
+  color: #9d9d9d;
+}
+
+/* メモ用のテキストエリアの設定 */
+.FlexTextarea{
+  /* min-height: 300px;
+  width: 80%; */
+  position: relative;
+  width: 80%;
+  margin-right: 10%;
+  margin-left: 10%;
+}
+
+.FlexTextarea__dummy {
+  overflow: hidden;
+  visibility: hidden;
+  box-sizing: border-box;
+ /*  padding: 5px 15px; */
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  border: 1px solid;
+  min-height: 500px;
+  width: 100%;
+}
+
+textarea{
+  display: inline-block;
+  width: 100%;
+  height: 100%;
+  font-size: 1.5rem;          /* 文字サイズ */
+  color: #f5f5f5;
+  line-height: 1.2;        /* 行の高さ */
+  border-radius: 0.25rem; /* 枠線 */
+  border: 2px solid #c6c6c6;  
+  background-color: #212529;
+  padding: 10px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  resize: none;
+}
+
+.textarea:focus {
+  outline: none;           /* ※ブラウザが標準で付加する線を消したいとき */
+}
+
+.memo-group input{
+  margin-left: auto;
+  margin-right: auto;
+}
