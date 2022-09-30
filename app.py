@@ -5,7 +5,8 @@ from flask import Flask, render_template, redirect, request, flash, session, url
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import UserMixin, LoginManager, login_user, logout_user, login_required
 from werkzeug.security import check_password_hash, generate_password_hash
-from helpers import check_email
+from helpers import check_email, categories_change_json
+
 
 app = Flask(__name__)
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///videomemo.db"
@@ -75,16 +76,28 @@ def home():
         # userが保持してるカテゴリをすべて取得
         categories = Categories.query.filter_by(user_id=user_id).all()
         # カテゴリーをjsonに適した形に変換
-        categories_json = []
-        for categorie in categories:
-            categorie_dict = {}
-            categorie_dict["id"] = categorie.id
-            categorie_dict["categorie"] = categorie.categorie
-            categories_json.append(categorie_dict)
-        print(categories_json)
+        categories_json = categories_change_json(categories)
         # userが保持してるvideoをすべて取得
         videos = Videos.query.filter_by(user_id=user_id).all()
-        return render_template("home.html", videos=videos, categories=categories, categories_json=categories_json)
+        # memoをupdatetime順に並べ替え
+        memos = db.session.query(Memos.video_id, Memos.updatetime).order_by(Memos.updatetime.desc()).all()
+        # メモが存在する場合はvideo_idをキーとして最新順に保存 memoの数を数える
+        updatetimes = {}
+        memos_count = {}
+        for memo in memos:
+            if memo.video_id not in updatetimes:
+                updatetimes[memo.video_id] = memo.updatetime
+                memos_count[memo.video_id] = 1
+            else:
+                memos_count[memo.video_id] += 1
+        # メモが存在しない場合はupdatetimeはNoneとして保存
+        for video in videos:
+            if video.id not in updatetimes:
+                updatetimes[video.id] = None
+                memos_count[video.id] = 0
+        print(updatetimes)
+        print(memos_count)
+        return render_template("home.html", videos=videos, categories=categories, categories_json=categories_json, updatetimes=updatetimes, memos_count=memos_count)
 
     # 動画登録機能
     else:
@@ -123,15 +136,7 @@ def home():
 def create():
     user_id = session["user_id"]
     categories = Categories.query.filter_by(user_id=user_id).all()
-    # カテゴリーをjsonに適した形に変換
-    categories_json = []
-    for categorie in categories:
-        categorie_dict = {}
-        categorie_dict["id"] = categorie.id
-        categorie_dict["categorie"] = categorie.categorie
-        categories_json.append(categorie_dict)
-
-    return render_template("create.html", categories=categories, categories_json=categories_json)
+    return render_template("create.html", categories=categories)
 
 
 # 新規登録
@@ -144,7 +149,7 @@ def register():
         # userからemailとpasswordを受け取る
         email = request.form.get("email")
         main_password = request.form.get("mainpassword")
-        sub_password = request.form.get("subpassword") 
+        sub_password = request.form.get("subpassword")
 
         # emailやpasswordの入力がない場合などのエラー処理
         if not email or not check_email(email):
@@ -173,7 +178,6 @@ def register():
             flash("既にuserが存在します")
             return render_template("register.html")
 
-        flash("登録成功")
         return redirect(url_for("login"))
 
 # ログイン機能
@@ -185,32 +189,25 @@ def login():
         # userからemailとpasswordを受け取る
         email = request.form.get("email")
         password = request.form.get("password")
-
         # エラー処理
         if not email or not check_email(email):
-            flash("有効なemailを入力してください")
+            flash("メールアドレスを入力してください。")
             return render_template("login.html")        
         if not password:
-            flash("パスワードを入力してください")
+            flash("パスワードを入力してください。")
             return render_template("login.html")
 
-        # データベースからユーザーのデータを取得
+        # データベースからuserのデータを取得
         user = Users.query.filter_by(email=email).first()
-
-        # userが存在しない場合
-        if not user:
-            flash("userが存在しません")
-            return render_template("login.html")
         
-        # 保存されたhashとpasswordのhashが同じか確認する
-        if not check_password_hash(user.hash, password):
-            flash("パスワードが違います")
+        # user が存在しないまたは保存されたhashとpasswordのhashが違う場合
+        if not user or not check_password_hash(user.hash, password):
+            flash("メールアドレスもしくはパスワードが間違っています。")
             return render_template("login.html")
 
         login_user(user)
         # sessionにuser_idを保持
         session["user_id"] = user.id
-        flash("ログイン成功")
         return redirect(url_for("home"))
 
 # ログアウト機能

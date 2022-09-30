@@ -17,6 +17,11 @@
                 <h1 class="header">Youtube memo</h1>
             </header>
         </div>
+        {% with message = get_flashed_messages() %}
+            {% if message %}
+                {{ message }}
+            {% endif %}
+        {% endwith %}
         <div class="container">
             <div class="section">
                 <h1>register</h1>

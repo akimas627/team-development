@@ -75,9 +75,9 @@
                                     <h1 class="topic_title" id="{{ categorie.categorie }}">{{ categorie.categorie }}</h1>
                                 </div>
                                 <div class="memo_card_group">
-                                    
+                                    {% for updatetime in updatetimes %}
                                         {% for video in videos %}
-                                            {% if categorie.id == video.categorie_id %}
+                                            {% if categorie.id == video.categorie_id and updatetime == video.id %}
                                                 <div class="memo_card">
                                                     <a href="detail/{{ video.id }}"><img class="card__imgframe" src="https://img.youtube.com/vi/{{ video.url }}/maxresdefault.jpg"></a>
                                                     <a href="detail/{{ video.id }}">
@@ -86,10 +86,10 @@
                                                                 {{ video.videotitle | truncate(25, True) }}
                                                             </div>
                                                             <div class="card__overviewtext">
-                                                                {% if not video.memos %}
-                                                                    メモはまだありません．．．
+                                                                {% if memos_count[video.id] == 0 %}
+                                                                    メモはまだありません
                                                                 {% else %}
-                                                                    {{ video.memos | truncate(40, True)}}
+                                                                    メモは{{ memos_count[video.id] }}個です
                                                                 {% endif %}
                                                             </div>
                                                         </div>
@@ -97,6 +97,7 @@
                                                 </div>
                                             {% endif %}
                                         {% endfor %}
+                                    {% endfor %}
                                 </div>
                                 
                             </div>
