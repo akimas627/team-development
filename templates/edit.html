@@ -25,7 +25,7 @@
             <form action="/edit/{{ video.id }}" method="post">
                 <h2 class="section_addmemo">メモタイトル</h2>
                 <div>
-                    <input class="input-style" autocomplete="off" autofocus id="videotitle" name="videotitle" placeholder="メモタイトル" type="text" required>
+                    <input class="input-style" autocomplete="off" autofocus id="videotitle" value="{{ video.videotitle }}" name="videotitle" placeholder="メモタイトル" type="text" required>
                 </div>
                 <div>
                     <h2 class="section_addmemo">ジャンル</h2>
@@ -34,7 +34,7 @@
                             <option value="{{ categorie.categorie }}"id="categorie" name="categorie">
                         {% endfor %}
                     </datalist>
-                    <input autocomplete="off" class="input-style" id="categorie" list="janrecategorie" name="categorie" placeholder="ジャンル" type="text" required>
+                    <input autocomplete="off" class="input-style" id="categorie" value="{{ categorie.categorie }}" list="janrecategorie" name="categorie" placeholder="ジャンル" type="text" required>
                 </div>
                 <input class="btn btn-primary" type="submit" name="regist" value="変更">
             </form>

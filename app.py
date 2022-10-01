@@ -242,11 +242,13 @@ def detail(id):
 @login_required
 def edit(id):
     video = Videos.query.get(id)
+    user_id = session["user_id"]
     if request.method == "GET":    
         categorie = Categories.query.get(video.categorie_id)
-        return render_template("edit.html", video=video, categorie=categorie)
+        categories = db.session.query(Categories.categorie).filter_by(user_id=user_id).all()
+        return render_template("edit.html", video=video, categorie=categorie, categories=categories)
     else:
-        user_id = session["user_id"]
+        
         videotitle = request.form.get("videotitle")
         categorie = request.form.get("categorie")
         
