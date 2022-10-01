@@ -296,10 +296,11 @@ def memodetail(id, memo_id):
         video_url = "https://www.youtube.com/embed/" + video.url + "?start=" + memo_time
         return render_template("movie.html", video=video, categorie=categorie, video_url=video_url, now_memo=now_memo, memos=memos)
     
-    # メモのテキストを受け取り、それを保存していく
+    # メモのテキストを受け取り、それを保存していく updatetimeも更新する
     else:
         memotext = request.form.get("memotext")
         now_memo.memo = memotext
+        now_memo.updatetime = datetime.datetime.now()
         db.session.commit()
         return redirect(url_for("memodetail", id=video.id, memo_id=now_memo.id))
 
@@ -363,7 +364,11 @@ def memo(id):
     else:
         memotitle = request.form.get("memotitle")
         timestamp = request.form.get("timestamp")
+        if not memotitle:
+            flash("メモタイトルを入力してください。")
+            return render_template("memo.html", video=video)
         if len(timestamp) != 8:
+            flash("正しいタイムスタンプを入力してください。")
             return render_template("memo.html", video=video)
         user_id = session["user_id"]
         video_id = video.id
