@@ -65,10 +65,8 @@ def load_user(user_id):
 
 @app.route("/", methods=["GET", "POST"])
 def home():
-    # sessionがない場合はlogin.htmlに移動
     if not session:
         return render_template("login.html")
-    # session情報の取得
     user_id = session["user_id"]
 
     # マイページ
@@ -100,7 +98,6 @@ def home():
 
     # 動画登録機能
     else:
-        # userからタイトル・URL・カテゴリーを受け取る
         videotitle = request.form.get("videotitle")
         url = request.form.get("url")
         categorie = request.form.get("categorie")
@@ -116,7 +113,7 @@ def home():
             return render_template("create.html")
 
         # urlからyoutubeのidを取得
-        url = url[17:28]
+        youtube_url = url[17:28]
 
         # categorieが存在しない場合は新たに作成し追加する
         if not Categories.query.filter_by(categorie=categorie, user_id=user_id).first():
@@ -127,7 +124,7 @@ def home():
         # 新たなvideoを作成しdbに追加
         # dbから該当するCategoriesの主キーを取得
         categorie = db.session.query(Categories.id).filter_by(categorie=categorie, user_id=user_id).first()
-        new_video = Videos(videotitle=videotitle, url=url, user_id=user_id, categorie_id=categorie.id)
+        new_video = Videos(videotitle=videotitle, url=youtube_url, user_id=user_id, categorie_id=categorie.id)
         db.session.add(new_video)
         db.session.commit()
         return redirect(url_for("home"))
@@ -140,19 +137,18 @@ def create():
     categories = db.session.query(Categories.categorie).filter_by(user_id=user_id).all()
     return render_template("create.html", categories=categories)
 
-# 新規登録
+# userの新規登録
 @app.route("/register", methods=["GET", "POST"])
 def register():
     if request.method == "GET":
         return render_template("register.html")
 
     else:
-        # userからemailとpasswordを受け取る
         email = request.form.get("email")
         main_password = request.form.get("mainpassword")
         sub_password = request.form.get("subpassword")
 
-        # emailやpasswordの入力がない場合などのエラー処理
+        # エラー処理
         if not email or not check_email(email):
             flash("emailを入力してください")
             return render_template("register.html")
@@ -166,7 +162,6 @@ def register():
             flash("同じパスワードを入力してください")
             return render_template("register.html")
 
-        # hashの作成
         hash = generate_password_hash(main_password, method="sha512", salt_length=1000)
         new_user = Users(email=email, hash=hash)
 
@@ -174,7 +169,6 @@ def register():
         try:
             db.session.add(new_user)
             db.session.commit()
-        # 登録できなかった場合
         except:
             flash("既にuserが存在します")
             return render_template("register.html")
@@ -187,7 +181,6 @@ def login():
     if request.method == "GET":
         return render_template("login.html")
     else:
-        # userからemailとpasswordを受け取る
         email = request.form.get("email")
         password = request.form.get("password")
         # エラー処理
@@ -198,7 +191,6 @@ def login():
             flash("パスワードを入力してください。")
             return render_template("login.html")
 
-        # データベースからuserのデータを取得
         user = Users.query.filter_by(email=email).first()
 
         # user が存在しないまたは保存されたhashとpasswordのhashが違う場合
@@ -207,7 +199,6 @@ def login():
             return render_template("login.html")
 
         login_user(user)
-        # sessionにuser_idを保持
         session["user_id"] = user.id
         return redirect(url_for("home"))
 
@@ -227,7 +218,6 @@ def detail(id):
     # 動画の情報を取得
     video = Videos.query.get(id)
     video_url = "https://www.youtube.com/embed/" + video.url
-    # 動画のカテゴリを取得
     categorie = Categories.query.get(video.categorie_id)
     # 動画と紐づくメモの取得
     memos = db.session.query(Memos.id, Memos.memotitle).filter_by(user_id=user_id, video_id=video.id).all()
@@ -265,14 +255,15 @@ def edit(id):
 
         # videotitleとcategorieの変更の反映
         categorie = Categories.query.filter_by(categorie=categorie, user_id=user_id).first()
-        tmp = video.categorie_id
+        # 変更によってカテゴリーにビデオが存在しなくなる場合があるので、現在のカテゴリーidを保持する
+        tmp_categorie_id = video.categorie_id
         video.videotitle = videotitle
         video.categorie_id = categorie.id
         db.session.commit()
 
-        # カテゴリーに含まれるvideoがなくなった時の処理
-        if not Videos.query.filter_by(categorie_id=tmp, user_id=user_id).first():
-            categorie = Categories.query.filter_by(id=tmp).first()
+        # カテゴリーに含まれるvideoがなくなった時に該当するカテゴリーを削除する
+        if not Videos.query.filter_by(categorie_id=tmp_categorie_id, user_id=user_id).first():
+            categorie = Categories.query.filter_by(id=tmp_categorie_id).first()
             db.session.delete(categorie)
             db.session.commit()
         return redirect("/")
@@ -283,14 +274,13 @@ def edit(id):
 @login_required
 def memodetail(id, memo_id):
     video = Videos.query.get(id)
-    # 現在のメモ情報を取得(主キー)
     now_memo = Memos.query.get(memo_id)
     
     # 各メモを動画とともに表示する
     if request.method == "GET":
         user_id = session["user_id"]
         memos = Memos.query.filter_by(user_id=user_id, video_id=video.id).all()
-        now_memo = Memos.query.get(memo_id)
+        # now_memo = Memos.query.get(memo_id)
         categorie = Categories.query.get(video.categorie_id)
         # メモのタイムスタンプの時間を秒に変換する
         memo_time = str(int(datetime.timedelta(hours=int(now_memo.timestamp[0:2]), minutes=int(now_memo.timestamp[3:5]), seconds=int(now_memo.timestamp[6:8])).total_seconds()))
